@@ -6,6 +6,7 @@
 package batalha;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,13 +26,15 @@ public class Batalha {
     private static Jogador jogador1;
     private static Jogador jogador2;  
     
+    int teste;
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //carregaAtaques();
+        carregaAtaques();
         //carregarTabelas();
-        inicializarJogadores();;
+        //inicializarJogadores();;
         /*String teste = JOptionPane.showInputDialog(null, "oLA");
         System.out.println(teste);*/
     }
@@ -89,13 +92,29 @@ public class Batalha {
     }
     
     public static String carregaAtaques(){
+        String nomeTxt;
         JFileChooser arqEscolhido = new JFileChooser();        
         FileNameExtensionFilter filtroTxt = new FileNameExtensionFilter("Arquivo TXT", "txt");
         arqEscolhido.addChoosableFileFilter(filtroTxt);
         arqEscolhido.setAcceptAllFileFilterUsed(false);
         
-        FileReader arqLido = new FileReader(arqEscolhido.getSelectedFile().getAbsolutePath());
+        if(arqEscolhido.showOpenDialog(arqEscolhido) == JFileChooser.APPROVE_OPTION){
+            nomeTxt = arqEscolhido.getSelectedFile().getAbsolutePath();
+        }
         
+        nomeTxt = arqEscolhido.getSelectedFile().getAbsolutePath();
+
+        
+        System.out.println(arqEscolhido.getSelectedFile().getPath());
+        System.out.println(arqEscolhido.getSelectedFile().getAbsolutePath());
+        System.out.println(arqEscolhido.getSelectedFile().getCanonicalPath());
+       
+        
+        System.exit(0);
+        
+        
+        FileReader arqLido = new FileReader(nomeTxt);
+
         BufferedReader lerArq = new BufferedReader(arqLido);                        
  
             String linha = lerArq.readLine();
