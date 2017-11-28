@@ -30,30 +30,64 @@ public class Batalha {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        matrizAtaque = carregaAtaques();
-        //carregarTabelas();
-        //inicializarJogadores();;
+        matrizEspecie = carregaEspecies();
+        matrizAtaque  = carregaAtaques();
+        inicializarJogadores();
         /*String teste = JOptionPane.showInputDialog(null, "oLA");
         System.out.println(teste);*/
     }
     
-    public static String[][] carregaAtaques(){
+    public static String[][] carregaEspecies(){
         String[][] retorno = new String[151][8];
-        String nome = "C:\\TabelaEspeciess.txt";
-        String[] campos = new String[8];
+        String nome = "C:\\TabelaEspecies.txt";
         FileReader arq;
         BufferedReader lerArq;
+        String linha;
+        Integer i = 0;
         
         try{
             arq = new FileReader(nome);            
             lerArq = new BufferedReader(arq);
-            String linha = lerArq.readLine();
+            linha = lerArq.readLine();
+            linha = lerArq.readLine();
+            while (linha != null){                
+                retorno[i++] = linha.split("\t");
+                linha = lerArq.readLine();
+            }
+            
         } catch (IOException e) {
-            System.err.printf("Erro na abertura do arquivo: %s.\n",
-            e.getMessage());
+            System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
         }
         return retorno;
-    }   
+    }
+    
+    public static String[][] carregaAtaques(){
+        String[][] retorno = new String[165][7];
+        String nome = "C:\\TabelaAtaques.txt";
+        FileReader arq;
+        BufferedReader lerArq;
+        String linha;
+        Integer i = 0;
+        
+        try{
+            arq = new FileReader(nome);            
+            lerArq = new BufferedReader(arq);
+            linha = lerArq.readLine();
+            linha = lerArq.readLine();
+            while (linha != null){                
+                retorno[i++] = linha.split("\t");
+                linha = lerArq.readLine();
+            }
+            
+        } catch (IOException e) {
+            System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
+        }
+        return retorno;
+    }
+    
+    public static void inicializarJogadores(){
+        
+    }
 }
 //   
 //    /*
