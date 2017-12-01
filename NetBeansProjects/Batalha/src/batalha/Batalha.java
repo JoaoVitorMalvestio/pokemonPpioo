@@ -86,6 +86,17 @@ public class Batalha {
     }
     
     public static void inicializarJogadores(){
+        Scanner ler = new Scanner(System.in);
+        String[] paramJogador = new String[26];
+
+        System.out.printf("Informe os parametros de inicialização do jogador 1,\n");
+        System.out.printf("os paramentros deve ser informados separados por virgula,\n");
+        System.out.printf("(0-1 Humano/Maquina),(1-151 Pokemon 1),(1-100 Level),(1-165 Ataque 1),(1-165 Ataque 2),(1-165 Ataque 3),(1-165 Ataque 4)\n");
+        paramJogador = ler.nextLine().split(",");
+        
+        
+        
+        
         
     }
 }
