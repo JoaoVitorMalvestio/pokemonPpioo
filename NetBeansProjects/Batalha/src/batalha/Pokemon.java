@@ -28,6 +28,8 @@ public class Pokemon {
     private boolean flinch;
     private Especie especie;
     private Status status = Status.OK;
+    
+    
 
     public int getLevel() {
         return level;
@@ -91,6 +93,10 @@ public class Pokemon {
 
     public Status getStatus() {
         return status;
+    }
+    
+    public addAtaqueLista(Ataque ataque){
+        
     }
 
     public List<Ataque> getListaAtaque() {

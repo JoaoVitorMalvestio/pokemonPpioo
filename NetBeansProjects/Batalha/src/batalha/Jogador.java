@@ -13,15 +13,6 @@ import java.util.List;
  */
 public class Jogador {
     private List<Pokemon> listaPokemon;
-    private String nome;
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
     
     public void escolherComando(){
         
@@ -33,5 +24,9 @@ public class Jogador {
     
     public void usarAtaque(){
         
-    } 
+    }
+    
+    public void addPkmLista(Pokemon pokemon){
+        listaPokemon.add(pokemon);
+    }
 }

@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -57,7 +58,10 @@ public class Batalha {
             
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
         }
+        
         return retorno;
     }
     
@@ -81,23 +85,97 @@ public class Batalha {
             
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
         }
         return retorno;
     }
     
     public static void inicializarJogadores(){
-        Scanner ler = new Scanner(System.in);
+        Object[] opJogador = { "Humano", "Maquina"};
+        Object[] opNumPokemon = {1,2,3,4,5,6};
+        int escolha = 0;
+        String[] parametros = new String[6];
+        
+        escolha = JOptionPane.showOptionDialog(null, "O jogador 1 será:", "",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                null, opJogador, opJogador[0]);
+        if (escolha==0) jogador1 = new Maquina();
+        else 
+        if (escolha==1) jogador1 = new Humano();
+        else fechaJogo();
+        
+        escolha = 1;
+        
+        escolha += JOptionPane.showOptionDialog(null, "O jogador 1 terá quantos pokemons?", "",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                null, opNumPokemon, opNumPokemon[0]);
+        if (escolha<1 || escolha>6) fechaJogo();
+        
+        do{
+            int i = 0;
+            parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon numero " + escolha).split(","); 
+            Especie especie = new Especie(parametros[0]);
+            Pokemon pokemon = new Pokemon(especie,parametros[1]);
+            
+            Pokemon.addAtaqueLista()
+            Pokemon pokemon = new Pokemon(especie,parametros[1]);
+            
+            jogador1.addPkmLista(pokemon);
+            escolha--;
+        } while(escolha >= 1);
+        
+        
+        
+        
+        
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /*Scanner ler = new Scanner(System.in);
         String[] paramJogador = new String[26];
 
         System.out.printf("Informe os parametros de inicialização do jogador 1,\n");
         System.out.printf("os paramentros deve ser informados separados por virgula,\n");
         System.out.printf("(0-1 Humano/Maquina),(1-151 Pokemon 1),(1-100 Level),(1-165 Ataque 1),(1-165 Ataque 2),(1-165 Ataque 3),(1-165 Ataque 4)\n");
+        
         paramJogador = ler.nextLine().split(",");
         
+        if (parseInt(paramJogador[0]) > 1 && parseInt(paramJogador[0]) < 0){
+            
+            
+        }*/
         
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+
+    private static boolean parseBoolean(int escolha) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public static void fechaJogo(){
+        System.exit(0);       
     }
 }
 //   
