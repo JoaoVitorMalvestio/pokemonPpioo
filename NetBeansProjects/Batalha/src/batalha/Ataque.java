@@ -15,6 +15,11 @@ public class Ataque {
     private double ppAtual;
     private double power;
     private double accuracy;
+    
+    public Ataque(String[] parametros){
+        
+        
+    }
 
     public int getId() {
         return id;

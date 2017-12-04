@@ -115,14 +115,35 @@ public class Batalha {
         do{
             int i = 0;
             parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon numero " + escolha).split(","); 
-            Especie especie = new Especie(parametros[0]);
+            Especie especie = new Especie(matrizEspecie[parseInt(parametros[0])-1]);
             Pokemon pokemon = new Pokemon(especie,parametros[1]);
             
-            Pokemon.addAtaqueLista()
-            Pokemon pokemon = new Pokemon(especie,parametros[1]);
+            i = 2;
+            
+            while (i<5){
+                Ataque ataque;
+                if (parametros[0]!="0"){
+                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="comum") ataque = new Ataque(matrizAtaque[parseInt(parametros[0])-1]);
+                    else 
+                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="modifier") ataque = new AtaqueModifier(matrizAtaque[parseInt(parametros[0])-1]);
+                    else 
+                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="status") ataque = new Ataque(matrizAtaque[parseInt(parametros[0])-1]);
+                    else 
+                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="multihit") ataque = new Ataque(matrizAtaque[parseInt(parametros[0])-1]);
+                    else 
+                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="hp") ataque = new Ataque(matrizAtaque[parseInt(parametros[0])-1]);
+                    else 
+                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="fixo") ataque = new Ataque(matrizAtaque[parseInt(parametros[0])-1]);
+                    else 
+                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="charge") ataque = new Ataque(matrizAtaque[parseInt(parametros[0])-1]);
+                }
+                Ataque ataque = 
+                
+                pokemon.addAtaqueLista(ataque);             
+            }
             
             jogador1.addPkmLista(pokemon);
-            escolha--;
+            --escolha;
         } while(escolha >= 1);
         
         

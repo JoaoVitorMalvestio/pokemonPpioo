@@ -6,6 +6,8 @@
 package batalha;
 
 import java.io.FileReader;
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
 
 /**
  *
@@ -32,6 +34,19 @@ public class Especie {
         this.baseSpd = baseSpd;
         this.tipo1 = tipo1;
         this.tipo2 = tipo2;
+    }
+    
+    public Especie (String[] parametros){
+        
+        this.id      = parseInt(parametros[0]);
+        this.nome    = parametros[1];
+        this.baseHp  = parseDouble(parametros[2]);
+        this.baseAtk = parseDouble(parametros[3]);;
+        this.baseDef = parseDouble(parametros[4]);
+        this.baseSpe = parseDouble(parametros[5]);
+        this.baseSpd = parseDouble(parametros[6]);
+        this.tipo1   = Tipo.valueOf(parametros[7]);
+        this.tipo2   = Tipo.valueOf(parametros[8]);    
     }
     
     public int getId(){
@@ -68,5 +83,13 @@ public class Especie {
     
     public Tipo getTipo2(){
         return this.tipo2;
+    }
+    
+    public double Calculo_Atributo_Base (double hp, int level){
+        return 2 * hp * level / 100 + level + 10;
+    }
+    
+    public double Calculo_Atributo_Hp (double base, int level){
+        return 2 * base * level / 100 + 5;
     }
 }

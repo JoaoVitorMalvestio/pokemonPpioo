@@ -5,6 +5,7 @@
  */
 package batalha;
 
+import static java.lang.Integer.parseInt;
 import java.util.List;
 
 /**
@@ -18,7 +19,8 @@ public class Pokemon {
     private double atk;
     private double def;
     private double spe;
-    private int modifierAccuuracy;
+    private double spd;
+    private int modifierAccuracy;
     private int modifierEvasion;
     private int modifierAtk;
     private int modifierDef;
@@ -28,8 +30,26 @@ public class Pokemon {
     private boolean flinch;
     private Especie especie;
     private Status status = Status.OK;
+    private List<Ataque> listaAtaque;  
     
-    
+    public Pokemon(Especie especie, String level){
+        this.level = parseInt(level);
+        this.especie = especie;
+        this.hdMax = especie.Calculo_Atributo_Hp(especie.getBaseHp(), this.level);
+        this.hpAtual = this.hdMax;      
+        this.atk = especie.Calculo_Atributo_Base(especie.getBaseAtk(), this.level);
+        this.def = especie.Calculo_Atributo_Base(especie.getBaseDef(), this.level);
+        this.spe = especie.Calculo_Atributo_Base(especie.getBaseSpe(), this.level);
+        this.spd = especie.Calculo_Atributo_Base(especie.getBaseSpd(), this.level);
+        this.modifierAccuracy = 0;
+        this.modifierEvasion = 0;
+        this.modifierAtk = 0;
+        this.modifierDef = 0;
+        this.modifierSpe = 0;
+        this.modifierSpd = 0;
+        this.confusion = false;
+        this.flinch = false;
+    }
 
     public int getLevel() {
         return level;
@@ -95,14 +115,15 @@ public class Pokemon {
         return status;
     }
     
-    public addAtaqueLista(Ataque ataque){
+    public void addAtaqueLista(Ataque ataque){
+        
         
     }
 
     public List<Ataque> getListaAtaque() {
         return listaAtaque;
     }
-    private List<Ataque> listaAtaque;    
+      
     
 
     
