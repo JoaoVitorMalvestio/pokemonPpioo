@@ -5,7 +5,7 @@
  */
 package batalha;
 
-import static java.lang.Integer.parseInt;
+import static java.lang.Double.parseDouble;
 
 /**
  *
@@ -13,13 +13,13 @@ import static java.lang.Integer.parseInt;
  */
 public class AtaqueHP extends Ataque{
     private int valor;
-    private int porcentagem;
+    private double porcentagem;
 
     public AtaqueHP(String[] parametros){
         super(parametros);
         
-        this.valor = parseInt(parametros[7].split(",")[0]);
-        this.porcentagem = parseInt(parametros[7].split(",")[1]);
+        this.valor = 0;
+        this.porcentagem = parseDouble(parametros[7].split(",")[1]);
     }
     
     @Override

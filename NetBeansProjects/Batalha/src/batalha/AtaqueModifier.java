@@ -12,14 +12,14 @@ import static java.lang.Integer.parseInt;
  * @author joaov
  */
 public class AtaqueModifier extends Ataque {
-    private int mod;
+    private Status mod;
     private int n;
     private int chance;
     
     public AtaqueModifier(String[] parametros){
         super(parametros);
         
-        this.mod = parseInt(parametros[7].split(",")[0]);
+        this.mod = Status.valueOf(parametros[7].split(",")[0]);
         this.n = parseInt(parametros[7].split(",")[1]);
         this.chance = parseInt(parametros[7].split(",")[2]);
     }

@@ -114,36 +114,59 @@ public class Batalha {
         
         do{
             int i = 0;
-            parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon numero " + escolha).split(","); 
-            Especie especie = new Especie(matrizEspecie[parseInt(parametros[0])-1]);
-            Pokemon pokemon = new Pokemon(especie,parametros[1]);
+            parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon numero " + escolha).split(",");
+            List<Ataque> listaAtaque = new ArrayList();
             
             i = 2;
             
-            while (i<5){
+            while (i<=5){
                 Ataque ataque = null;
                 
-                if (parametros[0]!="0"){
-                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="comum") ataque = new Ataque(matrizAtaque[parseInt(parametros[0])-1]);
-                    else 
-                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="modifier") ataque = new AtaqueModifier(matrizAtaque[parseInt(parametros[0])-1]);
-                    else 
-                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="status") ataque = new AtaqueStatus(matrizAtaque[parseInt(parametros[0])-1]);
-                    else 
-                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="multihit") ataque = new AtaqueMultihit(matrizAtaque[parseInt(parametros[0])-1]);
-                    else 
-                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="hp") ataque = new AtaqueHP(matrizAtaque[parseInt(parametros[0])-1]);
-                    else 
-                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="fixo") ataque = new AtaqueFixo(matrizAtaque[parseInt(parametros[0])-1]);
-                    else 
-                    if (matrizAtaque[parseInt(parametros[0])-1][6]=="charge") ataque = new AtaqueCharge(matrizAtaque[parseInt(parametros[0])-1]);
-                }               
-                pokemon.addAtaqueLista(ataque);             
+                if (parseInt(parametros[i])>0){
+                    switch (matrizAtaque[parseInt(parametros[i])-1][6]){
+                        case "comum":
+                            ataque = new Ataque(matrizAtaque[parseInt(parametros[0])-1]);
+                            break;
+                            
+                        case "modifier":
+                            ataque = new AtaqueModifier(matrizAtaque[parseInt(parametros[0])-1]);
+                            break;
+                            
+                        case "status":
+                            ataque = new AtaqueStatus(matrizAtaque[parseInt(parametros[0])-1]);
+                            break;
+                            
+                        case "multihit":
+                            ataque = new AtaqueMultihit(matrizAtaque[parseInt(parametros[0])-1]);
+                            break;
+                            
+                        case "hp":
+                            ataque = new AtaqueHP(matrizAtaque[parseInt(parametros[0])-1]);
+                            break;
+                            
+                        case "fixo":
+                            ataque = new AtaqueFixo(matrizAtaque[parseInt(parametros[0])-1]);
+                            break;
+                            
+                        case "charge":
+                            ataque = new AtaqueCharge(matrizAtaque[parseInt(parametros[0])-1]);
+                            break;
+                    }                     
+                }
+                
+                System.out.println(ataque.getNome());
+                
+                listaAtaque.add(ataque);
+                i++;
             }
+            
+            Especie especie = new Especie(matrizEspecie[parseInt(parametros[0])-1]);
+            Pokemon pokemon = new Pokemon(especie,parametros[1],listaAtaque);
             
             jogador1.addPkmLista(pokemon);
             --escolha;
         } while(escolha >= 1);
+        
         
         
         

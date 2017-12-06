@@ -32,7 +32,7 @@ public class Pokemon {
     private Status status = Status.OK;
     private List<Ataque> listaAtaque;  
     
-    public Pokemon(Especie especie, String level){
+    public Pokemon(Especie especie, String level, List<Ataque> listaAtaque){
         this.level = parseInt(level);
         this.especie = especie;
         this.hdMax = especie.Calculo_Atributo_Hp(especie.getBaseHp(), this.level);
@@ -49,6 +49,7 @@ public class Pokemon {
         this.modifierSpd = 0;
         this.confusion = false;
         this.flinch = false;
+        this.listaAtaque = listaAtaque;
     }
 
     public int getLevel() {

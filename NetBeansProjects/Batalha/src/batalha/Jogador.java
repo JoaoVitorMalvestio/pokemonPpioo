@@ -5,6 +5,7 @@
  */
 package batalha;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  * @author joaov
  */
 public class Jogador {
-    private List<Pokemon> listaPokemon;
+    private List<Pokemon> listaPokemon = new ArrayList();
     
     public void escolherComando(){
         

@@ -24,7 +24,7 @@ public class Especie {
     private Tipo tipo1;
     private Tipo tipo2;
 
-    public Especie (int id, String nome, Tipo tipo1, Tipo tipo2, double baseHp, double baseAtk, double baseDef, double baseSpe, double baseSpd){
+    /*public Especie (int id, String nome, Tipo tipo1, Tipo tipo2, double baseHp, double baseAtk, double baseDef, double baseSpe, double baseSpd){
         this.id = id;
         this.nome = nome;
         this.baseHp = baseHp;
@@ -34,19 +34,20 @@ public class Especie {
         this.baseSpd = baseSpd;
         this.tipo1 = tipo1;
         this.tipo2 = tipo2;
-    }
+    }*/
     
     public Especie (String[] parametros){
         
         this.id      = parseInt(parametros[0]);
         this.nome    = parametros[1];
-        this.baseHp  = parseDouble(parametros[2]);
-        this.baseAtk = parseDouble(parametros[3]);;
-        this.baseDef = parseDouble(parametros[4]);
-        this.baseSpe = parseDouble(parametros[5]);
-        this.baseSpd = parseDouble(parametros[6]);
-        this.tipo1   = Tipo.valueOf(parametros[7]);
-        this.tipo2   = Tipo.valueOf(parametros[8]);    
+        this.tipo1   = Tipo.valueOf(parametros[2]);
+        this.tipo2   = Tipo.valueOf(parametros[3]); 
+        this.baseHp  = parseDouble(parametros[4]);
+        this.baseAtk = parseDouble(parametros[5]);;
+        this.baseDef = parseDouble(parametros[6]);
+        this.baseSpe = parseDouble(parametros[7]);
+        this.baseSpd = parseDouble(parametros[8]);
+           
     }
     
     public int getId(){
