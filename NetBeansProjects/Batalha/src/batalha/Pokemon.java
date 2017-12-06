@@ -76,7 +76,7 @@ public class Pokemon {
     }
 
     public int getModifierAccuuracy() {
-        return modifierAccuuracy;
+        return modifierAccuracy;
     }
 
     public int getModifierEvasion() {

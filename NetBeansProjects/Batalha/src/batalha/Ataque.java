@@ -54,15 +54,15 @@ public class Ataque {
         
     }
     
-    public boolean calculoCRITICO(){
-        
+    public boolean calculoCritico(){
+        return false;
     }
     
-    public boolean calculoAcertto(){
-        
+    public boolean calculoAcerto(){
+        return false;
     }
     
     public double calculoDano(){
-        
+        return 0;
     }
 }

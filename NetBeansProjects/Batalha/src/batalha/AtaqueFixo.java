@@ -11,22 +11,17 @@ import static java.lang.Integer.parseInt;
  *
  * @author joaov
  */
-public class AtaqueModifier extends Ataque {
-    private int mod;
-    private int n;
-    private int chance;
-    
-    public AtaqueModifier(String[] parametros){
+public class AtaqueFixo extends Ataque{
+    private int val;
+
+    public AtaqueFixo(String[] parametros){
         super(parametros);
         
-        this.mod = parseInt(parametros[7].split(",")[0]);
-        this.n = parseInt(parametros[7].split(",")[1]);
-        this.chance = parseInt(parametros[7].split(",")[2]);
+        this.val = parseInt(parametros[7].split(",")[0]);       
     }
     
     @Override
     public void efeito(){
         
     }
-    
 }
