@@ -185,24 +185,25 @@ public class Batalha {
             
             //0=Trocar Pokemon  1=Realizar Ataque
             comandoJogador1 = jogador1.escolherComando(1);
-            comandoJogador2 = jogador2.escolherComando(2);
-            
+            comandoJogador2 = jogador2.escolherComando(2);           
             
             listaPrioridadeJogador.add(jogador1);
             
             if (comandoJogador1==comandoJogador2){                                
                 //Compara velocidade dos pokemons
-                if (jogador2.getPrimeiroPokemon().getSpe() > jogador2.getPrimeiroPokemon().getSpe()){
-                    listaPrioridadeJogador.add(0,jogador2);
+                if (jogador1.getPrimeiroPokemon().getSpd() > jogador2.getPrimeiroPokemon().getSpd()){
+                    listaPrioridadeJogador.add(1,jogador2);
                 }
-                else listaPrioridadeJogador.add(jogador2);
+                else listaPrioridadeJogador.add(0,jogador2);
             }
             else {
                 //Veja quem escolheu a troca de pokemons e coloca em primeiro na lista
-                if (comandoJogador1==0) listaPrioridadeJogador.add(jogador2);
+                if (comandoJogador1==0) listaPrioridadeJogador.add(1,jogador2);
                 else listaPrioridadeJogador.add(0,jogador2);
             }
 
+            System.out.println(listaPrioridadeJogador.get(0).getPrimeiroPokemon().getEspecie().getNome() + " " + listaPrioridadeJogador.get(0).getPrimeiroPokemon().getModifierSpd()); 
+            System.out.println(listaPrioridadeJogador.get(1).getPrimeiroPokemon().getEspecie().getNome() + " " + listaPrioridadeJogador.get(1).getPrimeiroPokemon().getModifierSpd()); 
     
             //Quando os comandos sao iguais, apenas ver se é troca ou ataque e executar na lista de priopridade
             if (comandoJogador1==comandoJogador2){

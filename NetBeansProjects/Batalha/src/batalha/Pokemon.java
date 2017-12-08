@@ -77,6 +77,7 @@ public class Pokemon {
     }
     
     public double getSpd() {
+        System.out.println(spd);
         return spd;
     }
 
