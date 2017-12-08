@@ -12,14 +12,14 @@ import static java.lang.Integer.parseInt;
  * @author joaov
  */
 public class AtaqueStatus extends Ataque{
-    private Status status;
+    private String status;
     private int chance;
 
     public AtaqueStatus(String[] parametros){
         super(parametros);
         
-        this.status = Status.valueOf(parametros[7].split(",")[0]);
-        this.chance = parseInt(parametros[7].split(",")[1]);
+        this.status = parametros[7].split(",")[0].trim().toUpperCase();
+        this.chance = parseInt(parametros[7].split(",")[1].trim());
     }
     
     @Override

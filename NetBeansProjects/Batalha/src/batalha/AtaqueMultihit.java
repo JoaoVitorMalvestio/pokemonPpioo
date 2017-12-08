@@ -18,8 +18,8 @@ public class AtaqueMultihit extends Ataque{
     public AtaqueMultihit(String[] parametros){
         super(parametros);
         
-        this.min = parseInt(parametros[7].split(",")[0]);
-        this.max = parseInt(parametros[7].split(",")[1]);
+        this.min = parseInt(parametros[7].split(",")[0].trim());
+        this.max = parseInt(parametros[7].split(",")[1].trim());
     }
     
     @Override

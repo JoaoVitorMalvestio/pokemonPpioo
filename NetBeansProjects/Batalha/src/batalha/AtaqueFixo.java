@@ -12,12 +12,12 @@ import static java.lang.Integer.parseInt;
  * @author joaov
  */
 public class AtaqueFixo extends Ataque{
-    private int val;
+    private String val;
 
     public AtaqueFixo(String[] parametros){
         super(parametros);
         
-        this.val = parseInt(parametros[7].split(",")[0]);       
+        this.val = parametros[7].split(",")[0].trim();       
     }
     
     @Override

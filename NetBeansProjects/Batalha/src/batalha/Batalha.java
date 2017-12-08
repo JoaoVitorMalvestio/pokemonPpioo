@@ -33,9 +33,9 @@ public class Batalha {
     public static void main(String[] args) {
         matrizEspecie = carregaEspecies();
         matrizAtaque  = carregaAtaques();
-        inicializarJogadores();
-        /*String teste = JOptionPane.showInputDialog(null, "oLA");
-        System.out.println(teste);*/
+        inicializarJogador(jogador1,1);
+        inicializarJogador(jogador2,2);
+
     }
     
     public static String[][] carregaEspecies(){
@@ -91,71 +91,81 @@ public class Batalha {
         return retorno;
     }
     
-    public static void inicializarJogadores(){
+    public static void inicializarJogador(Jogador jogador,int numJogador){
         Object[] opJogador = { "Humano", "Maquina"};
         Object[] opNumPokemon = {1,2,3,4,5,6};
         int escolha = 0;
+        int contPkm = 0;
         String[] parametros = new String[6];
         
-        escolha = JOptionPane.showOptionDialog(null, "O jogador 1 será:", "",
+        escolha = JOptionPane.showOptionDialog(null, "O jogador " + numJogador + " será:", "",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
                 null, opJogador, opJogador[0]);
-        if (escolha==0) jogador1 = new Maquina();
-        else 
-        if (escolha==1) jogador1 = new Humano();
-        else fechaJogo();
+        
+        switch (escolha) {
+            case 0:
+                jogador = new Maquina();
+                break;
+                
+            case 1:
+                jogador = new Humano();
+                break;
+                
+            default:
+                fechaJogo();
+                break;
+        }
         
         escolha = 1;
         
-        escolha += JOptionPane.showOptionDialog(null, "O jogador 1 terá quantos pokemons?", "",
+        escolha += JOptionPane.showOptionDialog(null, "O jogador terá quantos pokemons?", "",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
                 null, opNumPokemon, opNumPokemon[0]);
-        if (escolha<1 || escolha>6) fechaJogo();
+        if (escolha<1 || escolha>6) fechaJogo();                
         
         do{
-            int i = 0;
-            parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon numero " + escolha).split(",");
+            parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon Nº" + ++contPkm,"3 50 65 66 67 68").split(" ");
+
             List<Ataque> listaAtaque = new ArrayList();
             
-            i = 2;
+            int i = 2;
             
             while (i<=5){
-                Ataque ataque = null;
+                String[] linhaMatrizAtaque = matrizAtaque[parseInt(parametros[i])-1];
+                
+                Ataque ataque = null;                               
                 
                 if (parseInt(parametros[i])>0){
                     switch (matrizAtaque[parseInt(parametros[i])-1][6]){
                         case "comum":
-                            ataque = new Ataque(matrizAtaque[parseInt(parametros[0])-1]);
+                            ataque = new Ataque(linhaMatrizAtaque);
                             break;
                             
                         case "modifier":
-                            ataque = new AtaqueModifier(matrizAtaque[parseInt(parametros[0])-1]);
+                            ataque = new AtaqueModifier(linhaMatrizAtaque);
                             break;
                             
                         case "status":
-                            ataque = new AtaqueStatus(matrizAtaque[parseInt(parametros[0])-1]);
+                            ataque = new AtaqueStatus(linhaMatrizAtaque);
                             break;
                             
                         case "multihit":
-                            ataque = new AtaqueMultihit(matrizAtaque[parseInt(parametros[0])-1]);
+                            ataque = new AtaqueMultihit(linhaMatrizAtaque);
                             break;
                             
                         case "hp":
-                            ataque = new AtaqueHP(matrizAtaque[parseInt(parametros[0])-1]);
+                            ataque = new AtaqueHP(linhaMatrizAtaque);
                             break;
                             
                         case "fixo":
-                            ataque = new AtaqueFixo(matrizAtaque[parseInt(parametros[0])-1]);
+                            ataque = new AtaqueFixo(linhaMatrizAtaque);
                             break;
                             
                         case "charge":
-                            ataque = new AtaqueCharge(matrizAtaque[parseInt(parametros[0])-1]);
+                            ataque = new AtaqueCharge(linhaMatrizAtaque);
                             break;
                     }                     
-                }
-                
-                System.out.println(ataque.getNome());
-                
+                }                
                 listaAtaque.add(ataque);
                 i++;
             }
@@ -163,221 +173,11 @@ public class Batalha {
             Especie especie = new Especie(matrizEspecie[parseInt(parametros[0])-1]);
             Pokemon pokemon = new Pokemon(especie,parametros[1],listaAtaque);
             
-            jogador1.addPkmLista(pokemon);
-            --escolha;
-        } while(escolha >= 1);
-        
-        
-        
-        
-        
-        
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        /*Scanner ler = new Scanner(System.in);
-        String[] paramJogador = new String[26];
-
-        System.out.printf("Informe os parametros de inicialização do jogador 1,\n");
-        System.out.printf("os paramentros deve ser informados separados por virgula,\n");
-        System.out.printf("(0-1 Humano/Maquina),(1-151 Pokemon 1),(1-100 Level),(1-165 Ataque 1),(1-165 Ataque 2),(1-165 Ataque 3),(1-165 Ataque 4)\n");
-        
-        paramJogador = ler.nextLine().split(",");
-        
-        if (parseInt(paramJogador[0]) > 1 && parseInt(paramJogador[0]) < 0){
-            
-            
-        }*/
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    }
-
-    private static boolean parseBoolean(int escolha) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            jogador.addPkmLista(pokemon);
+        } while(--escolha >= 1);        
     }
     
     public static void fechaJogo(){
         System.exit(0);       
     }
 }
-//   
-//    /*
-//    public static void carregarTabelas(){         
-//        String nome = "C:\\TabelaEspecies.txt";
-//        String[] campos = new String[8];    
-//        Especie especie = null;
-//        
-//        try {
-//            FileReader arq = new FileReader(nome);            
-//            BufferedReader lerArq = new BufferedReader(arq);                        
-// 
-//            String linha = lerArq.readLine();
-//            linha = lerArq.readLine(); 
-//            while (linha != null) {
-//                System.out.printf("%s\n", linha);
-//                campos = linha.split("\t");
-//                matrizEspecie[Integer.parseInt(campos[0])-1] = linha.split("\t");
-//                /*try {
-//                    especie = new Especie(Integer.parseInt(campos[0]),
-//                                          campos[1],
-//                                          Tipo.valueOf(campos[2]),
-//                                          Tipo.valueOf(campos[3]),
-//                                          Double.parseDouble(campos[4]),
-//                                          Double.parseDouble(campos[5]),
-//                                          Double.parseDouble(campos[6]),
-//                                          Double.parseDouble(campos[7]),
-//                                          Double.parseDouble(campos[8]));
-//                } catch(IllegalArgumentException e){
-//                    especie = new Especie(Integer.parseInt(campos[0]),
-//                                          campos[1],
-//                                          Tipo.valueOf(campos[2]),
-//                                          Tipo.valueOf("None"),
-//                                          Double.parseDouble(campos[4]),
-//                                          Double.parseDouble(campos[5]),
-//                                          Double.parseDouble(campos[6]),
-//                                          Double.parseDouble(campos[7]),
-//                                          Double.parseDouble(campos[8]));
-//                }
-//                listaEspecie.add(especie);*/
-//                linha = lerArq.readLine();
-//            }
-//            arq.close();
-//        } catch (IOException e) {
-//            System.err.printf("Erro na abertura do arquivo: %s.\n",
-//            e.getMessage());
-//        }
-//        
-//        for(int i = 0;i<listaEspecie.size();i++){            
-//            System.out.println(listaEspecie.get(i).getNome());
-//        }
-//        
-//        //System.out.println();
-//    }
-//    
-//    public static String carregaAtaques(){
-//        String nomeTxt;
-//        JFileChooser arqEscolhido = new JFileChooser();        
-//        FileNameExtensionFilter filtroTxt = new FileNameExtensionFilter("Arquivo TXT", "txt");
-//        arqEscolhido.addChoosableFileFilter(filtroTxt);
-//        arqEscolhido.setAcceptAllFileFilterUsed(false);
-//        
-//        if(arqEscolhido.showOpenDialog(arqEscolhido) == JFileChooser.APPROVE_OPTION){
-//            nomeTxt = arqEscolhido.getSelectedFile().getAbsolutePath();
-//        }
-//        
-//        nomeTxt = arqEscolhido.getSelectedFile().getAbsolutePath();
-//
-//        
-//        System.out.println(arqEscolhido.getSelectedFile().getPath());
-//        System.out.println(arqEscolhido.getSelectedFile().getAbsolutePath());
-//        System.out.println(arqEscolhido.getSelectedFile().getCanonicalPath());
-//       
-//        
-//        System.exit(0);
-//        
-//        
-//        FileReader arqLido = new FileReader(nomeTxt);
-//
-//        BufferedReader lerArq = new BufferedReader(arqLido);                        
-// 
-//            String linha = lerArq.readLine();
-//            linha = lerArq.readLine(); 
-//            while (linha != null) {
-//                System.out.printf("%s\n", linha);
-//                campos = linha.split("\t");
-//                matrizEspecie[Integer.parseInt(campos[0])-1] = linha.split("\t");
-//                /*try {
-//                    especie = new Especie(Integer.parseInt(campos[0]),
-//                                          campos[1],
-//                                          Tipo.valueOf(campos[2]),
-//                                          Tipo.valueOf(campos[3]),
-//                                          Double.parseDouble(campos[4]),
-//                                          Double.parseDouble(campos[5]),
-//                                          Double.parseDouble(campos[6]),
-//                                          Double.parseDouble(campos[7]),
-//                                          Double.parseDouble(campos[8]));
-//                } catch(IllegalArgumentException e){
-//                    especie = new Especie(Integer.parseInt(campos[0]),
-//                                          campos[1],
-//                                          Tipo.valueOf(campos[2]),
-//                                          Tipo.valueOf("None"),
-//                                          Double.parseDouble(campos[4]),
-//                                          Double.parseDouble(campos[5]),
-//                                          Double.parseDouble(campos[6]),
-//                                          Double.parseDouble(campos[7]),
-//                                          Double.parseDouble(campos[8]));
-//                }
-//                listaEspecie.add(especie);*/
-//                linha = lerArq.readLine();
-//            }
-//            arq.close();
-//        
-//        if(arquivo.showOpenDialog(arquivo) == JFileChooser.APPROVE_OPTION){
-//            /*seuTextField.setText(*/ /*);*/
-//            System.out.println(arquivo.getSelectedFile().getAbsolutePath()); 
-//        }
-//        return "";
-//    }
-//    */
-//
-//    public static void inicializarJogadores(){       
-//        Object[] opcJogador = { "Humano", "Maquina" };
-//        Object auxString;;
-//        Integer auxInt;
-//        
-//        //Criando o time 1
-//        auxString = JOptionPane.showInputDialog(null,
-//            "Qual o tipo do Jogador 1?",
-//            "Pokemon",
-//            JOptionPane.PLAIN_MESSAGE,
-//            null,
-//            opcJogador,
-//            "Humano");
-//        
-//        if (auxString=="Humano") jogador1 = new Humano();
-//        else
-//        if (auxString=="Maquina") jogador1 = new Maquina();
-//             
-//        jogador1.setNome(JOptionPane.showInputDialog("Qual é o nome do Jogador 1?"));
-//        
-//        
-//        //Criando time 2
-//        auxString = JOptionPane.showInputDialog(null,
-//            "Qual o tipo do Jogador 2?",
-//            "Pokemon",
-//            JOptionPane.PLAIN_MESSAGE,
-//            null,
-//            opcJogador,
-//            "Humano");
-//        
-//        if (auxString=="Humano") jogador2 = new Humano();
-//        else
-//        if (auxString=="Maquina") jogador2 = new Maquina();
-//             
-//        jogador2.setNome(JOptionPane.showInputDialog("Qual é o nome do Jogador 2?"));
-//    }
-//    
-//    public static void executarTurno(){
-//        
-//    }

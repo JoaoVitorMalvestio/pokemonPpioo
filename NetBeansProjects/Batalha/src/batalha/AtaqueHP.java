@@ -19,7 +19,7 @@ public class AtaqueHP extends Ataque{
         super(parametros);
         
         this.valor = 0;
-        this.porcentagem = parseDouble(parametros[7].split(",")[1]);
+        this.porcentagem = parseDouble(parametros[7].split(",")[1].trim());
     }
     
     @Override
