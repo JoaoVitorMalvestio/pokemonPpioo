@@ -7,6 +7,7 @@ package batalha;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,8 +16,9 @@ import java.util.List;
 public class Jogador {
     private List<Pokemon> listaPokemon = new ArrayList();
     
-    public void escolherComando(){
-        
+    public int escolherComando(int numJogador){
+        //Função não usada
+        return 0;
     }
     
     public void trocarPokemon(){
@@ -25,9 +27,21 @@ public class Jogador {
     
     public void usarAtaque(){
         
-    }
+    }        
     
     public void addPkmLista(Pokemon pokemon){
         listaPokemon.add(pokemon);
+    }
+    
+    public boolean temPokemonVivo(){
+        for (Pokemon pokemon : listaPokemon) {
+            if (pokemon.getStatus()!=Status.FAINTED) return true;
+        }
+        
+        return false;
+    }
+    
+    public Pokemon getPrimeiroPokemon(){
+        return listaPokemon.get(0);        
     }
 }

@@ -5,14 +5,25 @@
  */
 package batalha;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author joaov
  */
 public class Humano extends Jogador{
     
-    @Override
-    public void escolherComando(){
+    @Override    
+    public int escolherComando(int numJogador){
+        Object[] opcoes = {"Trocar Pokemon","Realizar Ataque"};
+        int retorno;                
         
+        retorno = (JOptionPane.showOptionDialog(null, "O que o jogador " + numJogador + " ira fazer?", "",
+               JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                null, opcoes, opcoes[0]));        
+        
+        if (retorno!=0&&retorno!=1) Batalha.fechaJogo();
+        
+        return retorno;
     }
 }

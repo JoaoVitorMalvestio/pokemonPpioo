@@ -75,6 +75,10 @@ public class Pokemon {
     public double getSpe() {
         return spe;
     }
+    
+    public double getSpd() {
+        return spd;
+    }
 
     public int getModifierAccuuracy() {
         return modifierAccuracy;
@@ -103,9 +107,17 @@ public class Pokemon {
     public boolean isConfusion() {
         return confusion;
     }
+    
+    public void setConfusion(boolean flag) {
+        this.confusion = flag;
+    }
 
     public boolean isFlinch() {
         return flinch;
+    }
+    
+    public void setFlinch(boolean flag) {
+        this.flinch = flag;
     }
 
     public Especie getEspecie() {

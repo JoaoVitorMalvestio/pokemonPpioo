@@ -12,7 +12,7 @@ package batalha;
 public class Maquina extends Jogador{
     
     @Override
-    public void escolherComando(){
-        
+    public int escolherComando(int numJogador){
+        return 1;       
     }
 }

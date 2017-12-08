@@ -6,16 +6,12 @@
 package batalha;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -33,9 +29,9 @@ public class Batalha {
     public static void main(String[] args) {
         matrizEspecie = carregaEspecies();
         matrizAtaque  = carregaAtaques();
-        inicializarJogador(jogador1,1);
-        inicializarJogador(jogador2,2);
-
+        jogador1 = inicializarJogador(1);
+        jogador2 = inicializarJogador(2);        
+        batalha();
     }
     
     public static String[][] carregaEspecies(){
@@ -91,7 +87,8 @@ public class Batalha {
         return retorno;
     }
     
-    public static void inicializarJogador(Jogador jogador,int numJogador){
+    public static Jogador inicializarJogador(int numJogador){
+        Jogador jogador = null;
         Object[] opJogador = { "Humano", "Maquina"};
         Object[] opNumPokemon = {1,2,3,4,5,6};
         int escolha = 0;
@@ -104,11 +101,11 @@ public class Batalha {
         
         switch (escolha) {
             case 0:
-                jogador = new Maquina();
+                jogador = new Humano();
                 break;
                 
             case 1:
-                jogador = new Humano();
+                jogador = new Maquina();
                 break;
                 
             default:
@@ -174,7 +171,64 @@ public class Batalha {
             Pokemon pokemon = new Pokemon(especie,parametros[1],listaAtaque);
             
             jogador.addPkmLista(pokemon);
-        } while(--escolha >= 1);        
+        } while(--escolha >= 1); 
+        
+        return jogador;
+    }
+    
+    public static void batalha(){
+        int comandoJogador1;
+        int comandoJogador2;
+        
+        do{
+            List<Jogador> listaPrioridadeJogador = new ArrayList();                        
+            
+            //0=Trocar Pokemon  1=Realizar Ataque
+            comandoJogador1 = jogador1.escolherComando(1);
+            comandoJogador2 = jogador2.escolherComando(2);
+            
+            
+            listaPrioridadeJogador.add(jogador1);
+            
+            if (comandoJogador1==comandoJogador2){                                
+                //Compara velocidade dos pokemons
+                if (jogador2.getPrimeiroPokemon().getSpe() > jogador2.getPrimeiroPokemon().getSpe()){
+                    listaPrioridadeJogador.add(0,jogador2);
+                }
+                else listaPrioridadeJogador.add(jogador2);
+            }
+            else {
+                //Veja quem escolheu a troca de pokemons e coloca em primeiro na lista
+                if (comandoJogador1==0) listaPrioridadeJogador.add(jogador2);
+                else listaPrioridadeJogador.add(0,jogador2);
+            }
+
+    
+            //Quando os comandos sao iguais, apenas ver se é troca ou ataque e executar na lista de priopridade
+            if (comandoJogador1==comandoJogador2){
+                if (comandoJogador1==0){
+                    listaPrioridadeJogador.get(0).trocarPokemon();
+                    listaPrioridadeJogador.get(1).trocarPokemon();
+                }
+                else {
+                    listaPrioridadeJogador.get(0).usarAtaque();
+                    listaPrioridadeJogador.get(1).usarAtaque();
+                }                                                     
+            }
+            //Se não, ver quem vai executar a troca e fazer primeiro
+            else {
+                    listaPrioridadeJogador.get(0).trocarPokemon();
+                    listaPrioridadeJogador.get(1).usarAtaque();               
+            }                                                
+     
+        } while (jogador1.temPokemonVivo()&&jogador2.temPokemonVivo());
+        
+        if (jogador1.temPokemonVivo()) JOptionPane.showInputDialog("O jogador 1 ganhou!");
+        else
+        if (jogador2.temPokemonVivo()) JOptionPane.showInputDialog("O jogador 2 ganhou!");            
+        else JOptionPane.showInputDialog("Foi empate!");            
+              
+        fechaJogo();
     }
     
     public static void fechaJogo(){
