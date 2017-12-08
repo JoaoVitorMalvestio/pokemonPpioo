@@ -63,13 +63,29 @@ public class Ataque {
         
     }
     
-    public boolean calculoCritico(){
-        
-        return false;
+    public boolean calculoCritico(Double spdUsuario){
+        double isCritico = spdUsuario/512;
+        if(isCritico > Math.random()){
+            return true;
+        }else{
+          return false;  
+        }
     }
     
-    public boolean calculoAcerto(){
-        return false;
+    public boolean calculoAcerto(double modifierAccuracy, double modifierEvasion, Status status, boolean flinch){
+        double isHit = this.accuracy * (modifierAccuracy/modifierEvasion);
+        double rand = Math.random()*100;
+        if(status == Status.FROZEN || status == Status.SLEEP || flinch == true){
+            rand = 100;
+        }
+        if(status == Status.PARALYSIS){
+            rand += 25;
+        }
+        if(isHit > rand){
+            return true;
+        }else{
+          return false;
+        }
     }
     
     public double calculoDano(){

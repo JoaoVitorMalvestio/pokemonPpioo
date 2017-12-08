@@ -15,7 +15,7 @@ import java.util.List;
 public class Pokemon {
     private int level;
     private double hpAtual;
-    private double hdMax;
+    private double hpMax;
     private double atk;
     private double def;
     private double spe;
@@ -30,13 +30,13 @@ public class Pokemon {
     private boolean flinch;
     private Especie especie;
     private Status status = Status.OK;
-    private List<Ataque> listaAtaque;  
+    private List<Ataque> listaAtaque; 
     
     public Pokemon(Especie especie, String level, List<Ataque> listaAtaque){
         this.level = parseInt(level);
         this.especie = especie;
-        this.hdMax = especie.Calculo_Atributo_Hp(especie.getBaseHp(), this.level);
-        this.hpAtual = this.hdMax;      
+        this.hpMax = especie.Calculo_Atributo_Hp(especie.getBaseHp(), this.level);
+        this.hpAtual = this.hpMax;      
         this.atk = especie.Calculo_Atributo_Base(especie.getBaseAtk(), this.level);
         this.def = especie.Calculo_Atributo_Base(especie.getBaseDef(), this.level);
         this.spe = especie.Calculo_Atributo_Base(especie.getBaseSpe(), this.level);
@@ -61,7 +61,7 @@ public class Pokemon {
     }
 
     public double getHdMax() {
-        return hdMax;
+        return hpMax;
     }
 
     public double getAtk() {
@@ -132,6 +132,18 @@ public class Pokemon {
     public void addAtaqueLista(Ataque ataque){
         
         
+    }
+
+    public void setHpAtual(double hpAtual) {
+        if(hpAtual <= this.hpMax){
+            this.hpAtual = hpAtual;
+        }else{
+            System.out.println("Vida do pokemon está completa!");
+        }
+        if(this.hpAtual <= 0){
+            this.hpAtual = 0;
+            this.status = Status.FAINTED;
+        }
     }
 
     public List<Ataque> getListaAtaque() {
