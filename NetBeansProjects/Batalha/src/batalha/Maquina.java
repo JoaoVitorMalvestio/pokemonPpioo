@@ -5,6 +5,8 @@
  */
 package batalha;
 
+import java.util.Random;
+
 /**
  *
  * @author joaov
@@ -12,7 +14,15 @@ package batalha;
 public class Maquina extends Jogador{
     
     @Override
-    public int escolherComando(int numJogador){
-        return 1;       
+    public int escolherComando(int nroJogador){
+        Random rand = new Random();
+        return rand.nextInt(2);
+    }
+    public int escolherAtaque(){
+        return 0;
+    }
+    public int escolhePokemon(){
+        Random rand = new Random();
+        return rand.nextInt(4)+1;
     }
 }
