@@ -30,7 +30,7 @@ public class Pokemon {
     private boolean flinch;
     private Especie especie;
     private Status status = Status.OK;
-    private List<Ataque> listaAtaque;  
+    private List<Ataque> listaAtaque; 
     
     public Pokemon(Especie especie, String level, List<Ataque> listaAtaque){
         this.level = parseInt(level);
@@ -131,6 +131,18 @@ public class Pokemon {
     public void addAtaqueLista(Ataque ataque){
         
         
+    }
+
+    public void setHpAtual(double hpAtual) {
+        if(hpAtual <= this.hpMax){
+            this.hpAtual = hpAtual;
+        }else{
+            System.out.println("Vida do pokemon está completa!");
+        }
+        if(this.hpAtual <= 0){
+            this.hpAtual = 0;
+            this.status = Status.FAINTED;
+        }
     }
 
     public List<Ataque> getListaAtaque() {
