@@ -22,16 +22,48 @@ public class Jogador {
     }
     
     public void trocarPokemon(){
+        int i = 0;
         
+        //Definir tamanho do array de pokemons
+        for (Pokemon pokemon : listaPokemon) if (pokemon!=getPrimeiroPokemon() && pokemon.getStatus() != Status.FAINTED) i++;
+
+        String[] listaPkm = new String[i];
+        
+        i = 0;
+        
+        for (Pokemon pokemon : listaPokemon) {
+            if (pokemon!=getPrimeiroPokemon() && pokemon.getStatus() != Status.FAINTED){
+                listaPkm[i] = pokemon.getEspecie().getNome() + "  HP: " + pokemon.getHpAtual() + "  Status: " + pokemon.getStatus().getNome();
+                i++;
+            }
+        }
+        
+        JOptionPane.showInputDialog(null,"Qual pokemon deseja usar?", "", JOptionPane.PLAIN_MESSAGE,null, listaPkm,"");
     }
     
     public void usarAtaque(){
+        int i = 0;
         
-    }        
-    
-    public void addPkmLista(Pokemon pokemon){
-        listaPokemon.add(pokemon);
-    }
+        Pokemon pokemon = this.getPrimeiroPokemon();
+        
+        for (Ataque ataque : pokemon.getListaAtaque()) if (ataque.getPpAtual()!=0) i++;
+
+
+        String[] listaAtaque = new String[i];
+        
+        i = 0;
+        
+        for (Ataque ataque : pokemon.getListaAtaque()){
+            if (ataque.getPpAtual()!=0) listaAtaque[i++] = ataque.getNome() + "  PP: " + ataque.getPpAtual() + "  Tipo: " + ataque.getTipo().getNome();
+        }
+        
+        JOptionPane.showInputDialog(null,"Qual ataque deseja usar?", "", JOptionPane.PLAIN_MESSAGE,null, listaAtaque,"");
+
+    }    
+
+    public List getListaPokemon(){
+        return this.listaPokemon;
+    }   
     
     public boolean temPokemonVivo(){
         for (Pokemon pokemon : listaPokemon) {

@@ -37,6 +37,7 @@ public class Especie {
     }*/
     
     public Especie (String[] parametros){
+        if (parametros[3].equals("")) parametros[3] = "None";
         
         this.id      = parseInt(parametros[0]);
         this.nome    = parametros[1];

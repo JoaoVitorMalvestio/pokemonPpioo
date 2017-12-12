@@ -15,7 +15,7 @@ import java.util.List;
 public class Pokemon {
     private int level;
     private double hpAtual;
-    private double hdMax;
+    private double hpMax;
     private double atk;
     private double def;
     private double spe;
@@ -35,8 +35,8 @@ public class Pokemon {
     public Pokemon(Especie especie, String level, List<Ataque> listaAtaque){
         this.level = parseInt(level);
         this.especie = especie;
-        this.hdMax = especie.Calculo_Atributo_Hp(especie.getBaseHp(), this.level);
-        this.hpAtual = this.hdMax;      
+        this.hpMax = especie.Calculo_Atributo_Hp(especie.getBaseHp(), this.level);
+        this.hpAtual = this.hpMax;      
         this.atk = especie.Calculo_Atributo_Base(especie.getBaseAtk(), this.level);
         this.def = especie.Calculo_Atributo_Base(especie.getBaseDef(), this.level);
         this.spe = especie.Calculo_Atributo_Base(especie.getBaseSpe(), this.level);
@@ -60,8 +60,8 @@ public class Pokemon {
         return hpAtual;
     }
 
-    public double getHdMax() {
-        return hdMax;
+    public double getHpMax() {
+        return hpMax;
     }
 
     public double getAtk() {
@@ -77,7 +77,6 @@ public class Pokemon {
     }
     
     public double getSpd() {
-        System.out.println(spd);
         return spd;
     }
 

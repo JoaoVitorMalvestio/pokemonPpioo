@@ -95,9 +95,14 @@ public class Batalha {
         int contPkm = 0;
         String[] parametros = new String[6];
         
-        escolha = JOptionPane.showOptionDialog(null, "O jogador " + numJogador + " será:", "",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-                null, opJogador, opJogador[0]);
+        try{
+            escolha = JOptionPane.showOptionDialog(null, "O jogador " + numJogador + " será:", "",
+                   JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                  null, opJogador, opJogador[0]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.printf("Erro na leitura dos parametros: %s.\n",e.getMessage());  
+            fechaJogo();
+        }
         
         switch (escolha) {
             case 0:
@@ -169,9 +174,10 @@ public class Batalha {
             
             Especie especie = new Especie(matrizEspecie[parseInt(parametros[0])-1]);
             Pokemon pokemon = new Pokemon(especie,parametros[1],listaAtaque);
+            jogador.getListaPokemon().add(contPkm-1,pokemon);
             
-            jogador.addPkmLista(pokemon);
-        } while(--escolha >= 1); 
+            escolha--;
+        } while(escolha > 0); 
         
         return jogador;
     }
@@ -201,9 +207,6 @@ public class Batalha {
                 if (comandoJogador1==0) listaPrioridadeJogador.add(1,jogador2);
                 else listaPrioridadeJogador.add(0,jogador2);
             }
-
-            System.out.println(listaPrioridadeJogador.get(0).getPrimeiroPokemon().getEspecie().getNome() + " " + listaPrioridadeJogador.get(0).getPrimeiroPokemon().getModifierSpd()); 
-            System.out.println(listaPrioridadeJogador.get(1).getPrimeiroPokemon().getEspecie().getNome() + " " + listaPrioridadeJogador.get(1).getPrimeiroPokemon().getModifierSpd()); 
     
             //Quando os comandos sao iguais, apenas ver se é troca ou ataque e executar na lista de priopridade
             if (comandoJogador1==comandoJogador2){
