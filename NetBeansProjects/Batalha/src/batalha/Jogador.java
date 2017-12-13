@@ -5,6 +5,7 @@
  */
 package batalha;
 
+import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -22,23 +23,43 @@ public class Jogador {
     }
     
     public void trocarPokemon(){
+        String escolhaString = "";
+        Integer escolha = 0;
+        String listaPokemonString = "";
         int i = 0;
         
-        //Definir tamanho do array de pokemons
-        for (Pokemon pokemon : listaPokemon) if (pokemon!=getPrimeiroPokemon() && pokemon.getStatus() != Status.FAINTED) i++;
-
-        String[] listaPkm = new String[i];
-        
-        i = 0;
-        
         for (Pokemon pokemon : listaPokemon) {
-            if (pokemon!=getPrimeiroPokemon() && pokemon.getStatus() != Status.FAINTED){
-                listaPkm[i] = pokemon.getEspecie().getNome() + "  HP: " + pokemon.getHpAtual() + "  Status: " + pokemon.getStatus().getNome();
-                i++;
-            }
+            listaPokemonString += (i==0?"Atual ":i) + "- " + pokemon.getEspecie().getNome() + "  HP: " + pokemon.getHpAtual() + "  Status: " + pokemon.getStatus().getNome() + "\n";
+            i++;
         }
         
-        JOptionPane.showInputDialog(null,"Qual pokemon deseja usar?", "", JOptionPane.PLAIN_MESSAGE,null, listaPkm,"");
+        while(true){
+            try{
+                escolhaString = JOptionPane.showInputDialog("Sua equipe:\n" + listaPokemonString + "Entre com o numero do pokemon que deseja usar:","");
+                
+                if(escolhaString==null) Batalha.fechaJogo(); //Caso fechar a janela, fecha o jogo
+                
+                escolha = parseInt(escolhaString);
+                if (listaPokemon.get(escolha).getStatus()==Status.FAINTED){
+                    JOptionPane.showMessageDialog(null, "O pokemon escolhido nao está apto a lutar.", "", JOptionPane.ERROR_MESSAGE);
+                    continue;
+                }
+                if (escolha==0){
+                    JOptionPane.showMessageDialog(null, "O pokemon escolhido é o atual.", "", JOptionPane.ERROR_MESSAGE);
+                    continue;                   
+                }
+                if (escolha!=0) break;
+            } catch (NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Entre com um numero valido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                continue;
+            } catch (IndexOutOfBoundsException e){                
+                JOptionPane.showMessageDialog(null, "Seu time nao possui esse pokemon.", "Erro", JOptionPane.ERROR_MESSAGE);
+                continue;
+            }                      
+        }             
+        Pokemon novoPrimeiro = this.listaPokemon.get(escolha);
+        this.listaPokemon.remove(novoPrimeiro);
+        this.listaPokemon.add(0,novoPrimeiro);
     }
     
     public void usarAtaque(){
@@ -75,5 +96,17 @@ public class Jogador {
     
     public Pokemon getPrimeiroPokemon(){
         return listaPokemon.get(0);        
+    }
+    
+    public boolean podeTrocarPokemon(){
+        int i = 0;
+        
+        for(Pokemon pokemon:listaPokemon){
+            if (pokemon.getStatus()!=Status.FAINTED) i++; 
+        } 
+        
+        if (i<2) return false;
+        
+        return true;
     }
 }

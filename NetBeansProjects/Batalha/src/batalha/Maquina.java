@@ -11,18 +11,11 @@ import java.util.Random;
  *
  * @author joaov
  */
-public class Maquina extends Jogador{
-    
+public class Maquina extends Jogador{   
     @Override
     public int escolherComando(int nroJogador){
-        Random rand = new Random();
-        return rand.nextInt(2);
-    }
-    public int escolherAtaque(){
-        return 0;
-    }
-    public int escolhePokemon(){
-        Random rand = new Random();
-        return rand.nextInt(4)+1;
+        /*Random rand = new Random();
+        return rand.nextInt(2);*/
+        return 1;
     }
 }

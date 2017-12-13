@@ -54,8 +54,10 @@ public class Batalha {
             
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
+            fechaJogo();
         } catch (ArrayIndexOutOfBoundsException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
+            fechaJogo();
         }
         
         return retorno;
@@ -123,7 +125,7 @@ public class Batalha {
         escolha += JOptionPane.showOptionDialog(null, "O jogador terá quantos pokemons?", "",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
                 null, opNumPokemon, opNumPokemon[0]);
-        if (escolha<1 || escolha>6) fechaJogo();                
+        if (escolha<1 || escolha>6) fechaJogo(); //Clicou para fechar a janela                
         
         do{
             parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon Nº" + ++contPkm,"3 50 65 66 67 68").split(" ");
@@ -133,49 +135,51 @@ public class Batalha {
             int i = 2;
             
             while (i<=5){
-                String[] linhaMatrizAtaque = matrizAtaque[parseInt(parametros[i])-1];
-                
-                Ataque ataque = null;                               
-                
-                if (parseInt(parametros[i])>0){
-                    switch (matrizAtaque[parseInt(parametros[i])-1][6]){
-                        case "comum":
-                            ataque = new Ataque(linhaMatrizAtaque);
-                            break;
+                try{
+                    String[] linhaMatrizAtaque = matrizAtaque[parseInt(parametros[i])-1];                        
+                    Ataque ataque = null;   
+                    
+                    if (parseInt(parametros[i])>0){
+                        switch (matrizAtaque[parseInt(parametros[i])-1][6]){
+                            case "comum":
+                                ataque = new Ataque(linhaMatrizAtaque);
+                                break;
                             
-                        case "modifier":
-                            ataque = new AtaqueModifier(linhaMatrizAtaque);
-                            break;
+                            case "modifier":
+                                ataque = new AtaqueModifier(linhaMatrizAtaque);
+                                break;
                             
-                        case "status":
-                            ataque = new AtaqueStatus(linhaMatrizAtaque);
-                            break;
+                            case "status":
+                                ataque = new AtaqueStatus(linhaMatrizAtaque);
+                                break;
                             
-                        case "multihit":
-                            ataque = new AtaqueMultihit(linhaMatrizAtaque);
-                            break;
+                          case "multihit":
+                                ataque = new AtaqueMultihit(linhaMatrizAtaque);
+                                break;
                             
-                        case "hp":
-                            ataque = new AtaqueHP(linhaMatrizAtaque);
-                            break;
+                            case "hp":
+                                ataque = new AtaqueHP(linhaMatrizAtaque);
+                                break;
                             
-                        case "fixo":
-                            ataque = new AtaqueFixo(linhaMatrizAtaque);
-                            break;
+                            case "fixo":
+                                ataque = new AtaqueFixo(linhaMatrizAtaque);
+                                break;
                             
-                        case "charge":
-                            ataque = new AtaqueCharge(linhaMatrizAtaque);
-                            break;
-                    }                     
-                }                
-                listaAtaque.add(ataque);
-                i++;
-            }
-            
+                            case "charge":
+                                ataque = new AtaqueCharge(linhaMatrizAtaque);
+                                break;
+                        }                     
+                    }                
+                    listaAtaque.add(ataque);
+                    i++;
+                } catch (NumberFormatException e){
+                    System.err.printf("Erro na leitura dos parametros: %s.\n",e.getMessage());
+                    fechaJogo();
+                }               
+            }            
             Especie especie = new Especie(matrizEspecie[parseInt(parametros[0])-1]);
             Pokemon pokemon = new Pokemon(especie,parametros[1],listaAtaque);
             jogador.getListaPokemon().add(contPkm-1,pokemon);
-            
             escolha--;
         } while(escolha > 0); 
         
