@@ -175,7 +175,10 @@ public class Batalha {
                 } catch (NumberFormatException e){
                     System.err.printf("Erro na leitura dos parametros: %s.\n",e.getMessage());
                     fechaJogo();
-                }               
+                } catch (ArrayIndexOutOfBoundsException e){
+                    System.err.printf("Erro na leitura dos parametros: %s.\n",e.getMessage());
+                    fechaJogo();
+                }              
             }            
             Especie especie = new Especie(matrizEspecie[parseInt(parametros[0])-1]);
             Pokemon pokemon = new Pokemon(especie,parametros[1],listaAtaque);

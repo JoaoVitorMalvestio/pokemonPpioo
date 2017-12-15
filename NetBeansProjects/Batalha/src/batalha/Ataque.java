@@ -64,7 +64,7 @@ public class Ataque {
         this.ppAtual--;
         
         if (!this.calculoAcerto(aliado.getModifierAccuracy(), inimigo.getModifierEvasion(), aliado.getStatus(), aliado.isFlinch())){
-            JOptionPane.showInputDialog(aliado.getEspecie().getNome() + " errou o ataque!");
+            JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " errou o ataque!", "", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         
@@ -83,8 +83,11 @@ public class Ataque {
     }
     
     public boolean calculoAcerto(double modifierAccuracy, double modifierEvasion, Status status, boolean flinch){
-        double isHit = this.accuracy * (modifierAccuracy/modifierEvasion);
+        System.out.println(modifierAccuracy + " - " +  modifierEvasion + " - " + status.getNome() + " - " + flinch);
+        
+        double isHit = this.accuracy * (modifierAccuracy/modifierEvasion);        
         double rand = Math.random()*100;
+        
         if(status == Status.FROZEN || status == Status.SLEEP || flinch == true){
             rand = 100;
         }

@@ -60,6 +60,8 @@ public class Jogador {
         Pokemon novoPrimeiro = this.listaPokemon.get(escolha);
         this.listaPokemon.remove(novoPrimeiro);
         this.listaPokemon.add(0,novoPrimeiro);
+        
+        JOptionPane.showMessageDialog(null, this.listaPokemon.get(this.listaPokemon.size()-1).getEspecie().getNome() + " foi substituido pelo " + novoPrimeiro.getEspecie().getNome(), "", JOptionPane.PLAIN_MESSAGE);
     }
     
     public void usarAtaque(Pokemon pkmInimigo){
