@@ -80,7 +80,7 @@ public class Pokemon {
         return spd;
     }
 
-    public int getModifierAccuuracy() {
+    public int getModifierAccuracy() {
         return modifierAccuracy;
     }
 

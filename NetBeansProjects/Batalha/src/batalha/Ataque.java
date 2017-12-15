@@ -6,6 +6,7 @@
 package batalha;
 
 import static java.lang.Integer.parseInt;
+import javax.swing.JOptionPane;
 import static javax.xml.bind.DatatypeConverter.parseDouble;
 
 /**
@@ -59,12 +60,21 @@ public class Ataque {
         return tipo;
     }
     
-    public void efeito(){
+    public void efeito(Pokemon aliado,Pokemon inimigo){
+        this.ppAtual--;
         
+        if (!this.calculoAcerto(aliado.getModifierAccuracy(), inimigo.getModifierEvasion(), aliado.getStatus(), aliado.isFlinch())){
+            JOptionPane.showInputDialog(aliado.getEspecie().getNome() + " errou o ataque!");
+            return;
+        }
+        
+        double hpAtual = Math.abs(inimigo.getHpAtual() - calculoDano(aliado,inimigo));
+        
+        inimigo.setHpAtual(hpAtual);
     }
     
-    public boolean calculoCritico(Double spdUsuario){
-        double isCritico = spdUsuario/512;
+    public boolean calculoCritico(double spdAliado){
+        double isCritico = spdAliado/512;
         if(isCritico > Math.random()){
             return true;
         }else{
@@ -88,7 +98,9 @@ public class Ataque {
         }
     }
     
-    public double calculoDano(){
+    public double calculoDano(Pokemon aliado,Pokemon inimigo){
+        boolean ehCritico = calculoCritico(aliado.getSpd());
+        
         return 0;
     }
 }

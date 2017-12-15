@@ -219,14 +219,14 @@ public class Batalha {
                     listaPrioridadeJogador.get(1).trocarPokemon();
                 }
                 else {
-                    listaPrioridadeJogador.get(0).usarAtaque();
-                    listaPrioridadeJogador.get(1).usarAtaque();
+                    listaPrioridadeJogador.get(0).usarAtaque(listaPrioridadeJogador.get(1).getPrimeiroPokemon());
+                    listaPrioridadeJogador.get(1).usarAtaque(listaPrioridadeJogador.get(0).getPrimeiroPokemon());
                 }                                                     
             }
             //Se não, ver quem vai executar a troca e fazer primeiro
             else {
                     listaPrioridadeJogador.get(0).trocarPokemon();
-                    listaPrioridadeJogador.get(1).usarAtaque();               
+                    listaPrioridadeJogador.get(1).usarAtaque(listaPrioridadeJogador.get(0).getPrimeiroPokemon());               
             }                                                
      
         } while (jogador1.temPokemonVivo()&&jogador2.temPokemonVivo());

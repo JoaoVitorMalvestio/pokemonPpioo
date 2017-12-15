@@ -62,24 +62,40 @@ public class Jogador {
         this.listaPokemon.add(0,novoPrimeiro);
     }
     
-    public void usarAtaque(){
-        int i = 0;
-        
+    public void usarAtaque(Pokemon pkmInimigo){
+        int i = 0, escolha;        
         Pokemon pokemon = this.getPrimeiroPokemon();
+        Ataque ataque;
+        String listaAtaque = "", escolhaString = "";
         
-        for (Ataque ataque : pokemon.getListaAtaque()) if (ataque.getPpAtual()!=0) i++;
-
-
-        String[] listaAtaque = new String[i];
-        
-        i = 0;
-        
-        for (Ataque ataque : pokemon.getListaAtaque()){
-            if (ataque.getPpAtual()!=0) listaAtaque[i++] = ataque.getNome() + "  PP: " + ataque.getPpAtual() + "  Tipo: " + ataque.getTipo().getNome();
+        for (Ataque atk : pokemon.getListaAtaque()) listaAtaque += i++ + "- "+ atk.getNome() + "  PP: " + atk.getPpAtual() + "  Tipo: " + atk.getTipo().getNome() + "\n";
+   
+        while(true){
+            try{
+                escolhaString = JOptionPane.showInputDialog("Ataque disponiveis:\n" + listaAtaque + "Entre com o numero do ataque que deseja usar:","");
+                
+                if(escolhaString==null) Batalha.fechaJogo(); //Caso fechar a janela, fecha o jogo
+                
+                escolha = parseInt(escolhaString);
+                
+                ataque = pokemon.getListaAtaque().get(escolha);
+                
+                if (ataque.getPpAtual()==0){
+                    JOptionPane.showMessageDialog(null, "O ataque escolhido não possui PP!", "", JOptionPane.ERROR_MESSAGE);
+                    continue;
+                }
+                if (escolha!=0) break;
+            } catch (NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Entre com um numero valido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                continue;
+            } catch (IndexOutOfBoundsException e){                
+                JOptionPane.showMessageDialog(null, "Seu pokemon nao possui essa ataque.", "Erro", JOptionPane.ERROR_MESSAGE);
+                continue;
+            }                      
         }
         
-        JOptionPane.showInputDialog(null,"Qual ataque deseja usar?", "", JOptionPane.PLAIN_MESSAGE,null, listaAtaque,"");
-
+        ataque.efeito(pokemon,pkmInimigo);        
+        
     }    
 
     public List getListaPokemon(){
