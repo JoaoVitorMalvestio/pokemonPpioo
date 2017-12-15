@@ -132,7 +132,26 @@ public class Pokemon {
         
         
     }
-
+  
+    public double calculoAccuracyEvasion(int modificador){       
+        switch ((modificador)){
+            case -6: return 33;
+            case -5: return 37;
+            case -4: return 43;
+            case -3: return 50;
+            case -2: return 60;
+            case -1: return 75;
+            case 0: return 100;
+            case 1: return 133;
+            case 2: return 166;
+            case 3: return 200;
+            case 4: return 233;
+            case 5: return 266;
+            case 6: return 300;     
+        }  
+        return 0;
+    }
+    
     public void setHpAtual(double hpAtual) {
         if(hpAtual <= this.hpMax){
             this.hpAtual = hpAtual;

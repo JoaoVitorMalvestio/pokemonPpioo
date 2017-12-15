@@ -63,14 +63,16 @@ public class Ataque {
     public void efeito(Pokemon aliado,Pokemon inimigo){
         this.ppAtual--;
         
-        if (!this.calculoAcerto(aliado.getModifierAccuracy(), inimigo.getModifierEvasion(), aliado.getStatus(), aliado.isFlinch())){
+        if (!this.calculoAcerto(aliado.calculoAccuracyEvasion(aliado.getModifierAccuracy()), inimigo.calculoAccuracyEvasion(inimigo.getModifierEvasion()), aliado.getStatus(), aliado.isFlinch())){
             JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " errou o ataque!", "", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         
-        double hpAtual = Math.abs(inimigo.getHpAtual() - calculoDano(aliado,inimigo));
+        double dano = calculoDano(aliado,inimigo);
+        double hpAtual = Math.abs(inimigo.getHpAtual() - dano);
         
         inimigo.setHpAtual(hpAtual);
+        JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " acertou o ataque e deu " + dano + " de dano!", "", JOptionPane.PLAIN_MESSAGE);
     }
     
     public boolean calculoCritico(double spdAliado){
@@ -104,6 +106,8 @@ public class Ataque {
     public double calculoDano(Pokemon aliado,Pokemon inimigo){
         boolean ehCritico = calculoCritico(aliado.getSpd());
         
-        return 0;
+        
+        
+        return 5;
     }
 }

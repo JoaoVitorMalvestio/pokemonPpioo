@@ -61,7 +61,7 @@ public class Jogador {
         this.listaPokemon.remove(novoPrimeiro);
         this.listaPokemon.add(0,novoPrimeiro);
         
-        JOptionPane.showMessageDialog(null, this.listaPokemon.get(this.listaPokemon.size()-1).getEspecie().getNome() + " foi substituido pelo " + novoPrimeiro.getEspecie().getNome(), "", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, this.listaPokemon.get(1).getEspecie().getNome() + " foi substituido pelo " + novoPrimeiro.getEspecie().getNome(), "", JOptionPane.PLAIN_MESSAGE);
     }
     
     public void usarAtaque(Pokemon pkmInimigo){
