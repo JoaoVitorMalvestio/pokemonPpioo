@@ -128,7 +128,12 @@ public class Batalha {
         if (escolha<1 || escolha>6) fechaJogo(); //Clicou para fechar a janela                
         
         do{
-            parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon Nº" + ++contPkm,"3 50 65 66 67 68").split(" ");
+            try {
+                parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon Nº" + ++contPkm,"3 50 65 66 67 68").split(" ");
+            } catch (NullPointerException e){
+                fechaJogo();
+            }
+            
 
             List<Ataque> listaAtaque = new ArrayList();
             

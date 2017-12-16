@@ -68,7 +68,10 @@ public class Ataque {
             return;
         }
         
-        double dano = calculoDano(aliado,inimigo);
+        boolean critico = calculoCritico(aliado.getSpd());
+        
+        double dano = calculoDano(aliado,inimigo,critico);
+        
         double hpAtual = Math.abs(inimigo.getHpAtual() - dano);
         
         inimigo.setHpAtual(hpAtual);
@@ -103,8 +106,8 @@ public class Ataque {
         }
     }
     
-    public double calculoDano(Pokemon aliado,Pokemon inimigo){
-        boolean ehCritico = calculoCritico(aliado.getSpd());
+    public double calculoDano(Pokemon aliado,Pokemon inimigo,boolean critico){
+            
         
         
         
