@@ -127,11 +127,6 @@ public class Pokemon {
     public Status getStatus() {
         return status;
     }
-    
-    public void addAtaqueLista(Ataque ataque){
-        
-        
-    }
   
     public double calculoAccuracyEvasion(int modificador){       
         switch ((modificador)){
@@ -153,11 +148,9 @@ public class Pokemon {
     }
     
     public void setHpAtual(double hpAtual) {
-        if(hpAtual <= this.hpMax){
-            this.hpAtual = hpAtual;
-        }else{
-            System.out.println("Vida do pokemon está completa!");
-        }
+        if(hpAtual <= this.hpMax) this.hpAtual = hpAtual;
+        else System.out.println("Vida do pokemon está completa!");
+
         if(this.hpAtual <= 0){
             this.hpAtual = 0;
             this.status = Status.FAINTED;
@@ -167,8 +160,9 @@ public class Pokemon {
     public List<Ataque> getListaAtaque() {
         return listaAtaque;
     }
-      
     
-
-    
+    public String toString(){
+        return this.getEspecie().getNome() + "  HP: " + this.getHpAtual() + "  Status: " + this.getStatus().getNome();
+    }
+ 
 }

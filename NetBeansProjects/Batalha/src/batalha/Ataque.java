@@ -6,6 +6,7 @@
 package batalha;
 
 import static java.lang.Integer.parseInt;
+import java.util.Random;
 import javax.swing.JOptionPane;
 import static javax.xml.bind.DatatypeConverter.parseDouble;
 
@@ -60,8 +61,15 @@ public class Ataque {
         return tipo;
     }
     
+    public void setPpAtual(double ppAtual){
+        this.ppAtual = ppAtual;
+        
+    }
+    
     public void efeito(Pokemon aliado,Pokemon inimigo){
         this.ppAtual--;
+        
+        JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " usou " + this.getNome(), "", JOptionPane.PLAIN_MESSAGE);
         
         if (!this.calculoAcerto(aliado.calculoAccuracyEvasion(aliado.getModifierAccuracy()), inimigo.calculoAccuracyEvasion(inimigo.getModifierEvasion()), aliado.getStatus(), aliado.isFlinch())){
             JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " errou o ataque!", "", JOptionPane.PLAIN_MESSAGE);
@@ -72,7 +80,7 @@ public class Ataque {
         
         double dano = calculoDano(aliado,inimigo,critico);
         
-        double hpAtual = Math.abs(inimigo.getHpAtual() - dano);
+        double hpAtual = inimigo.getHpAtual() - dano;
         
         inimigo.setHpAtual(hpAtual);
         JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " acertou o ataque e deu " + dano + " de dano!", "", JOptionPane.PLAIN_MESSAGE);
@@ -80,37 +88,98 @@ public class Ataque {
     
     public boolean calculoCritico(double spdAliado){
         double isCritico = spdAliado/512;
-        if(isCritico > Math.random()){
-            return true;
-        }else{
-          return false;  
-        }
+        
+        if(isCritico > Math.random()) return true;
+
+        return false;  
     }
     
-    public boolean calculoAcerto(double modifierAccuracy, double modifierEvasion, Status status, boolean flinch){
-        System.out.println(modifierAccuracy + " - " +  modifierEvasion + " - " + status.getNome() + " - " + flinch);
-        
+    public boolean calculoAcerto(double modifierAccuracy, double modifierEvasion, Status status, boolean flinch){        
         double isHit = this.accuracy * (modifierAccuracy/modifierEvasion);        
         double rand = Math.random()*100;
         
-        if(status == Status.FROZEN || status == Status.SLEEP || flinch == true){
-            rand = 100;
-        }
-        if(status == Status.PARALYSIS){
-            rand += 25;
-        }
-        if(isHit > rand){
-            return true;
-        }else{
-          return false;
-        }
+        if(status == Status.FROZEN || status == Status.SLEEP || flinch == true) rand = 100;
+
+        if(status == Status.PARALYSIS) rand += 25;
+
+        if(isHit > rand) return true;
+        
+        return false;
     }
     
     public double calculoDano(Pokemon aliado,Pokemon inimigo,boolean critico){
-            
+        double L = aliado.getLevel();
+        double P = this.power;
+        double A = 0;
+        double D = 0;
+        double dano = 0;
+        Random rand = new Random();
         
+        if(this.tipo == Tipo.valueOf("None") ||
+           this.tipo == Tipo.valueOf("Fighting") ||
+           this.tipo == Tipo.valueOf("Flying") ||
+           this.tipo == Tipo.valueOf("Poison") ||
+           this.tipo == Tipo.valueOf("Ground")  ||
+           this.tipo == Tipo.valueOf("Rock") ||
+           this.tipo == Tipo.valueOf("Bug") ||
+           this.tipo == Tipo.valueOf("Ghost")){
+            A = (aliado.getAtk() < 0) ? 0 : aliado.getAtk();
+            D = inimigo.getDef();
+        }else 
+        if(this.tipo == Tipo.valueOf("Fire") ||
+           this.tipo == Tipo.valueOf("Water") ||
+           this.tipo == Tipo.valueOf("Electric") ||
+           this.tipo == Tipo.valueOf("Grass") ||
+           this.tipo == Tipo.valueOf("Ice") ||
+           this.tipo == Tipo.valueOf("Psychic") ||
+           this.tipo == Tipo.valueOf("Dragon")){
+            A = (aliado.getSpe() < 0) ? 0 : aliado.getSpe();
+            D = inimigo.getSpe();
+        }
         
+        if(critico) L *= 2;
+
+        if(aliado.getStatus() == Status.valueOf("BURN")){
+            A = (A < 0) ? 0 : (A/2);
+        }
         
-        return 5;
+        dano = (L * A * P / D / 50) + 2;
+        
+        if(this.tipo == aliado.getEspecie().getTipo1() || this.tipo == aliado.getEspecie().getTipo2()){
+            dano *= 1.5;
+        }
+        
+        dano *= getMultiplicadorDano(this.getTipo().getIdx(),inimigo.getEspecie().getTipo1().getIdx()) * getMultiplicadorDano(this.getTipo().getIdx(),inimigo.getEspecie().getTipo2().getIdx());
+
+        int R = (rand.nextInt(38)+217);
+        dano = (dano * R)/255;
+        return dano;
+    }
+    
+    public String toString(){       
+        return this.getNome() + "  PP: " + this.getPpAtual() + "  Tipo: " + this.getTipo().getNome();
+    }
+    
+    public double getMultiplicadorDano(int tipoAtacante, int tipoDefensor){
+        if (tipoDefensor==-1) return 1;
+        
+        double[][] tabela = {{1,1,1,1,1,0.5,1,0,1,1,1,1,1,1,1},
+                             {2,1,0.5,0.5,1,2,0.5,0,1,1,1,1,0.5,2,1},
+                             {1,2,1,1,1,0.5,2,1,1,1,2,0.5,1,1,1},
+                             {1,1,1,0.5,0.5,0.5,2,0.5,1,1,2,1,1,1,1},
+                             {1,1,0,2,1,2,0.5,1,2,1,0.5,2,1,1,1},
+                             {1,0.5,2,1,0.5,1,2,1,2,1,1,1,1,2,1},
+                             {1,0.5,0.5,2,1,1,1,0.5,0.5,1,2,1,2,1,1},
+                             {0,1,1,1,1,1,1,2,1,1,1,1,0,1,1},
+                             {1,1,1,1,1,0.5,2,1,0.5,0.5,2,1,1,2,0.5},
+                             {1,1,1,1,2,2,1,1,2,0.5,0.5,1,1,1,0.5},
+                             {1,1,0.5,0.5,2,2,0.5,1,0.5,2,0.5,1,1,1,0.5},
+                             {1,1,2,1,0,1,1,1,1,2,0.5,0.5,1,1,0.5},
+                             {1,2,1,2,1,1,1,1,1,1,1,1,0.5,1,1},
+                             {1,1,2,1,2,1,1,1,1,0.5,2,1,1,0.5,2},
+                             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,2}};
+        
+        return tabela[tipoAtacante][tipoDefensor];
+        
     }
 }

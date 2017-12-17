@@ -89,7 +89,7 @@ public class Batalha {
         return retorno;
     }
     
-    public static Jogador inicializarJogador(int numJogador){
+    public static Jogador inicializarJogador(int idJogador){
         Jogador jogador = null;
         Object[] opJogador = { "Humano", "Maquina"};
         Object[] opNumPokemon = {1,2,3,4,5,6};
@@ -98,7 +98,7 @@ public class Batalha {
         String[] parametros = new String[6];
         
         try{
-            escolha = JOptionPane.showOptionDialog(null, "O jogador " + numJogador + " será:", "",
+            escolha = JOptionPane.showOptionDialog(null, "O jogador " + idJogador + " será:", "",
                    JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
                   null, opJogador, opJogador[0]);
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -108,11 +108,11 @@ public class Batalha {
         
         switch (escolha) {
             case 0:
-                jogador = new Humano();
+                jogador = new Humano(idJogador);
                 break;
                 
             case 1:
-                jogador = new Maquina();
+                jogador = new Maquina(idJogador);
                 break;
                 
             default:
@@ -122,29 +122,30 @@ public class Batalha {
         
         escolha = 1;
         
-        escolha += JOptionPane.showOptionDialog(null, "O jogador terá quantos pokemons?", "",
+        escolha += JOptionPane.showOptionDialog(null, "O jogador " + idJogador + " terá quantos pokemons?", "",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
                 null, opNumPokemon, opNumPokemon[0]);
         if (escolha<1 || escolha>6) fechaJogo(); //Clicou para fechar a janela                
-        
+    
         do{
             try {
-                parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon Nº" + ++contPkm,"3 50 65 66 67 68").split(" ");
+                parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon Nº" + ++contPkm + "\n" + 
+                                                         "Formato: (idPokemon) (Level) (IdAtaque1) (IdAtaque2) (IdAtaque3) (IdAtaque4)","1 1 11 13 14 24").split(" ");
             } catch (NullPointerException e){
                 fechaJogo();
             }
-            
 
-            List<Ataque> listaAtaque = new ArrayList();
-            
+            List<Ataque> listaAtaque = new ArrayList();  
             int i = 2;
             
-            while (i<=5){
+            while (i<=5){              
                 try{
-                    String[] linhaMatrizAtaque = matrizAtaque[parseInt(parametros[i])-1];                        
+                    int idAtaque = parseInt(parametros[i])-1;
+                    String[] linhaMatrizAtaque = {};
+                    if (idAtaque>0) linhaMatrizAtaque = matrizAtaque[idAtaque];                        
                     Ataque ataque = null;   
                     
-                    if (parseInt(parametros[i])>0){
+                    if (idAtaque>0){
                         switch (matrizAtaque[parseInt(parametros[i])-1][6]){
                             case "comum":
                                 ataque = new Ataque(linhaMatrizAtaque);
@@ -173,17 +174,17 @@ public class Batalha {
                             case "charge":
                                 ataque = new AtaqueCharge(linhaMatrizAtaque);
                                 break;
-                        }                     
-                    }                
-                    listaAtaque.add(ataque);
+                        }   
+                        listaAtaque.add(ataque);
+                    }
                     i++;
                 } catch (NumberFormatException e){
-                    System.err.printf("Erro na leitura dos parametros: %s.\n",e.getMessage());
+                    System.err.printf("Erro na leitura dos parametros, formato invalido: %s.\n",e.getMessage());
                     fechaJogo();
                 } catch (ArrayIndexOutOfBoundsException e){
-                    System.err.printf("Erro na leitura dos parametros: %s.\n",e.getMessage());
+                    System.err.printf("Erro na leitura dos parametros, falta argumentos: %s.\n",e.getMessage());
                     fechaJogo();
-                }              
+                }         
             }            
             Especie especie = new Especie(matrizEspecie[parseInt(parametros[0])-1]);
             Pokemon pokemon = new Pokemon(especie,parametros[1],listaAtaque);
@@ -202,8 +203,8 @@ public class Batalha {
             List<Jogador> listaPrioridadeJogador = new ArrayList();                        
             
             //0=Trocar Pokemon  1=Realizar Ataque
-            comandoJogador1 = jogador1.escolherComando(1);
-            comandoJogador2 = jogador2.escolherComando(2);           
+            comandoJogador1 = jogador1.escolherComando(jogador2.getPrimeiroPokemon());
+            comandoJogador2 = jogador2.escolherComando(jogador1.getPrimeiroPokemon());           
             
             listaPrioridadeJogador.add(jogador1);
             
@@ -228,26 +229,46 @@ public class Batalha {
                 }
                 else {
                     listaPrioridadeJogador.get(0).usarAtaque(listaPrioridadeJogador.get(1).getPrimeiroPokemon());
+                    if (temVencedor()) break;
+                    if (pokemonEstaFainted(listaPrioridadeJogador.get(0))) listaPrioridadeJogador.get(0).forcaTroca();
+                    if (pokemonEstaFainted(listaPrioridadeJogador.get(1))){
+                        listaPrioridadeJogador.get(1).forcaTroca();
+                        continue; //Caso o pokemon morrer no ultimo ataque, o jogador nao pode atacar com o pokemon novo
+                    }
                     listaPrioridadeJogador.get(1).usarAtaque(listaPrioridadeJogador.get(0).getPrimeiroPokemon());
+                    if (temVencedor()) break;
+                    if (pokemonEstaFainted(listaPrioridadeJogador.get(0))) listaPrioridadeJogador.get(0).forcaTroca();
+                    if (pokemonEstaFainted(listaPrioridadeJogador.get(1))) listaPrioridadeJogador.get(1).forcaTroca();
                 }                                                     
             }
             //Se não, ver quem vai executar a troca e fazer primeiro
             else {
                     listaPrioridadeJogador.get(0).trocarPokemon();
-                    listaPrioridadeJogador.get(1).usarAtaque(listaPrioridadeJogador.get(0).getPrimeiroPokemon());               
+                    listaPrioridadeJogador.get(1).usarAtaque(listaPrioridadeJogador.get(0).getPrimeiroPokemon());                   
+                    if (temVencedor()) break;
+                    if (pokemonEstaFainted(listaPrioridadeJogador.get(0))) listaPrioridadeJogador.get(0).forcaTroca();
+                    if (pokemonEstaFainted(listaPrioridadeJogador.get(1))) listaPrioridadeJogador.get(1).forcaTroca();
             }                                                
      
-        } while (jogador1.temPokemonVivo()&&jogador2.temPokemonVivo());
+        } while (!temVencedor());
         
-        if (jogador1.temPokemonVivo()) JOptionPane.showInputDialog("O jogador 1 ganhou!");
+        if (jogador1.temPokemonVivo()) JOptionPane.showMessageDialog(null,"O jogador 1 ganhou!","", JOptionPane.PLAIN_MESSAGE);
         else
-        if (jogador2.temPokemonVivo()) JOptionPane.showInputDialog("O jogador 2 ganhou!");            
-        else JOptionPane.showInputDialog("Foi empate!");            
+        if (jogador2.temPokemonVivo()) JOptionPane.showMessageDialog(null,"O jogador 2 ganhou!","", JOptionPane.PLAIN_MESSAGE);            
+        else JOptionPane.showMessageDialog(null,"Deu empate","", JOptionPane.PLAIN_MESSAGE);            
               
         fechaJogo();
     }
     
     public static void fechaJogo(){
         System.exit(0);       
+    }
+    
+    public static boolean pokemonEstaFainted(Jogador jogador){
+        return jogador.getPrimeiroPokemon().getStatus()==Status.FAINTED;
+    }
+    
+    public static boolean temVencedor(){
+        return !jogador1.temPokemonVivo() || !jogador2.temPokemonVivo();
     }
 }

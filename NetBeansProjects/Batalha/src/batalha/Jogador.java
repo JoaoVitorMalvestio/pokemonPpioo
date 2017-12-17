@@ -16,8 +16,13 @@ import javax.swing.JOptionPane;
  */
 public class Jogador {
     private List<Pokemon> listaPokemon = new ArrayList();
+    int idJogador;
     
-    public int escolherComando(int numJogador){
+    public Jogador (int idJogador){
+        this.idJogador = idJogador;    
+    }
+    
+    public int escolherComando(Pokemon pkm){
         //Função não usada
         return 0;
     }
@@ -29,7 +34,7 @@ public class Jogador {
         int i = 0;
         
         for (Pokemon pokemon : listaPokemon) {
-            listaPokemonString += (i==0?"Atual ":i) + "- " + pokemon.getEspecie().getNome() + "  HP: " + pokemon.getHpAtual() + "  Status: " + pokemon.getStatus().getNome() + "\n";
+            listaPokemonString += (i==0?"Atual ":i) + "- " + pokemon.toString() + "\n";
             i++;
         }
         
@@ -65,16 +70,19 @@ public class Jogador {
     }
     
     public void usarAtaque(Pokemon pkmInimigo){
-        int i = 0, escolha;        
-        Pokemon pokemon = this.getPrimeiroPokemon();
-        Ataque ataque;
+        int i = 0, escolha = -1;        
+        Pokemon pokemon    = this.getPrimeiroPokemon();
+        Ataque ataque      = null;
         String listaAtaque = "", escolhaString = "";
         
-        for (Ataque atk : pokemon.getListaAtaque()) listaAtaque += i++ + "- "+ atk.getNome() + "  PP: " + atk.getPpAtual() + "  Tipo: " + atk.getTipo().getNome() + "\n";
-   
+        //Gera lista de ataque em string para mostrar
+        for (Ataque atk : pokemon.getListaAtaque()) listaAtaque += i++ + "- "+ atk.toString() + "\n";
+
         while(true){
-            try{
-                escolhaString = JOptionPane.showInputDialog("Ataque disponiveis:\n" + listaAtaque + "Entre com o numero do ataque que deseja usar:","");
+            try{                
+                escolhaString = JOptionPane.showInputDialog("Jogador " + this.idJogador + " irá atacar!\n" +
+                                                            "Pokemon Atual: " + this.getPrimeiroPokemon().toString() + "\n" +
+                                                            "Ataque disponiveis:\n" + listaAtaque + "Entre com o numero do ataque que deseja usar:","");
                 
                 if(escolhaString==null) Batalha.fechaJogo(); //Caso fechar a janela, fecha o jogo
                 
@@ -83,10 +91,10 @@ public class Jogador {
                 ataque = pokemon.getListaAtaque().get(escolha);
                 
                 if (ataque.getPpAtual()==0){
-                    JOptionPane.showMessageDialog(null, "O ataque escolhido não possui PP!", "", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "O ataque escolhido não possui PP!", "Erro", JOptionPane.ERROR_MESSAGE);
                     continue;
                 }
-                if (escolha!=0) break;
+                if (escolha!=-1) break;
             } catch (NumberFormatException e){
                 JOptionPane.showMessageDialog(null, "Entre com um numero valido.", "Erro", JOptionPane.ERROR_MESSAGE);
                 continue;
@@ -96,8 +104,7 @@ public class Jogador {
             }                      
         }
         
-        ataque.efeito(pokemon,pkmInimigo);        
-        
+        ataque.efeito(pokemon,pkmInimigo);                
     }    
 
     public List getListaPokemon(){
@@ -108,7 +115,6 @@ public class Jogador {
         for (Pokemon pokemon : listaPokemon) {
             if (pokemon.getStatus()!=Status.FAINTED) return true;
         }
-        
         return false;
     }
     
@@ -126,5 +132,22 @@ public class Jogador {
         if (i<2) return false;
         
         return true;
+    }
+    
+    public void forcaTroca(){
+        int i = 0;
+        Pokemon pkmApto = null;
+        
+        for(Pokemon pkm : this.listaPokemon){
+            pkmApto = pkm;
+            if (pkm.getStatus()!=Status.FAINTED) break;
+            i++;
+        };
+        
+        if (pkmApto==null) return;
+        JOptionPane.showMessageDialog(null,"Jogador " + this.idJogador + ":\n" +
+                                           this.getPrimeiroPokemon().getEspecie().getNome() + " será substituido pelo " + pkmApto.getEspecie().getNome(),"", JOptionPane.PLAIN_MESSAGE);
+        this.listaPokemon.remove(pkmApto);
+        this.listaPokemon.add(0,pkmApto);
     }
 }

@@ -13,17 +13,20 @@ import javax.swing.JOptionPane;
  */
 public class Humano extends Jogador{
     
+    public Humano(int idJogador){
+        super(idJogador);
+    }
+    
     @Override    
-    public int escolherComando(int numJogador){
+    public int escolherComando(Pokemon pkmInimigo){
         Object[] opcoes = {"Trocar Pokemon","Realizar Ataque"};
         int retorno;        
         String mensagem;
         Pokemon pkmAtual = this.getPrimeiroPokemon();
         
-        mensagem = "O que o jogador " + numJogador + " ira fazer?\n" +
-                   "Pokemon Atual: " + pkmAtual.getEspecie().getNome() + 
-                   "  HP: " + pkmAtual.getHpAtual() +
-                   "  Status: " + pkmAtual.getStatus().getNome();
+        mensagem = "O que o jogador " + this.idJogador + " ira fazer?\n" +
+                   "Pokemon Atual: " + pkmAtual.toString() + "\n" +
+                   "Pokemon Inimigo: " + pkmInimigo.toString();
                
         
         while(true){

@@ -87,11 +87,11 @@ public class Especie {
         return this.tipo2;
     }
     
-    public double Calculo_Atributo_Base (double hp, int level){
+    public double Calculo_Atributo_Hp (double hp, int level){
         return 2 * hp * level / 100 + level + 10;
     }
     
-    public double Calculo_Atributo_Hp (double base, int level){
+    public double Calculo_Atributo_Base (double base, int level){
         return 2 * base * level / 100 + 5;
     }
 }
