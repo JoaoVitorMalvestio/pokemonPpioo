@@ -47,7 +47,7 @@ public class Pokemon {
         this.modifierDef = 0;
         this.modifierSpe = 0;
         this.modifierSpd = 0;
-        this.confusion = false;
+        this.confusion = false; 
         this.flinch = false;
         this.listaAtaque = listaAtaque;
     }

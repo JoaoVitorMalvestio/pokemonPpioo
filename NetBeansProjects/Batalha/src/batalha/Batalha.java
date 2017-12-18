@@ -133,8 +133,23 @@ public class Batalha {
         do{
             try {
                 parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon Nº" + ++contPkm + "\n" + 
-                                                         "Formato: (idPokemon) (Level) (IdAtaque1) (IdAtaque2) (IdAtaque3) (IdAtaque4)","1 1 6 9 21 40").split(" ");
+                                                         "Formato: (idPokemon) (Level) (IdAtaque1) (IdAtaque2) (IdAtaque3) (IdAtaque4)","0 0 0 0 0 0").split(" ");
             } catch (NullPointerException e){
+                fechaJogo();
+            }
+            
+            if (parametros[0].equals("0")) {
+                System.err.printf("Erro na leitura dos parametros, argumentos zerados\n");
+                fechaJogo();
+            }
+            
+            if (parametros[1].equals("0")) {
+                System.err.printf("Erro na leitura dos parametros, argumentos zerados\n");
+                fechaJogo();
+            }
+            
+            if (parametros[2].equals("0") && parametros[3].equals("0") && parametros[4].equals("0") && parametros[5].equals("0")){
+                System.err.printf("Erro na leitura dos parametros, nenhum ataque foi informado!\n");
                 fechaJogo();
             }
 
@@ -188,7 +203,8 @@ public class Batalha {
                     System.err.printf("Erro na leitura dos parametros, falta argumentos: %s.\n",e.getMessage());
                     fechaJogo();
                 }         
-            }            
+            }
+            
             Especie especie = new Especie(matrizEspecie[parseInt(parametros[0])-1]);
             Pokemon pokemon = new Pokemon(especie,parametros[1],listaAtaque);
             jogador.getListaPokemon().add(contPkm-1,pokemon);
@@ -281,9 +297,13 @@ public class Batalha {
     
     public static void executaEfeitoStatus(Jogador jogador){
         Pokemon pokemon = jogador.getPrimeiroPokemon();
-        if (pokemon.getStatus()==Status.OK) return;
         
-        if (pokemon.getStatus()==Status.BURN){
+        
+        if (Status.OK.equals(pokemon.getStatus())) return;
+        
+        System.out.println("teste");
+        
+        if (Status.BURN.equals(pokemon.getStatus())){
             double dano = pokemon.getHpMax() * 6.25;
             double hpAtual = pokemon.getHpAtual() - dano;
             pokemon.setHpAtual(hpAtual);
@@ -291,7 +311,7 @@ public class Batalha {
                                                pokemon.getEspecie().getNome() + " HP: " + pokemon.getHpAtual(),"", JOptionPane.PLAIN_MESSAGE); 
             if (pokemonEstaFainted(jogador)) jogador.forcaTroca();
         }
-        if (pokemon.getStatus()==Status.POISON){
+        if (Status.POISON.equals(pokemon.getStatus())){
             double dano = pokemon.getHpMax() * 6.25;
             double hpAtual = pokemon.getHpAtual() - dano;
             pokemon.setHpAtual(hpAtual);
@@ -299,7 +319,7 @@ public class Batalha {
                                                pokemon.getEspecie().getNome() + " HP: " + pokemon.getHpAtual(),"", JOptionPane.PLAIN_MESSAGE); 
             if (pokemonEstaFainted(jogador)) jogador.forcaTroca();
         }
-        if (pokemon.getStatus()==Status.FROZEN){
+        if (Status.FROZEN.equals(pokemon.getStatus())){
             double rand = Math.random()*100;
  
             if (10>rand) {
@@ -307,7 +327,7 @@ public class Batalha {
                 JOptionPane.showMessageDialog(null,pokemon.getEspecie().getNome() + " saiu do status Frozen!","", JOptionPane.PLAIN_MESSAGE);
             }
         }
-        if (pokemon.getStatus()==Status.SLEEP){
+        if (Status.SLEEP.equals(pokemon.getStatus())){
             double rand = Math.random()*100;
  
             if (20>rand) {
@@ -322,7 +342,7 @@ public class Batalha {
         if (pokemon.isConfusion()){
             double rand = Math.random()*100;
  
-            if (20>rand) pokemon.setConfusion(false);
+            if (20 > rand) pokemon.setConfusion(false);
             JOptionPane.showMessageDialog(null,pokemon.getEspecie().getNome() + " saiu do status Confusion!","", JOptionPane.PLAIN_MESSAGE);
         }
         

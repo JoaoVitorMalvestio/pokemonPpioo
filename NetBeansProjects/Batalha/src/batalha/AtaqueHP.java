@@ -38,10 +38,21 @@ public class AtaqueHP extends Ataque{
         
         double dano = calculoDano(aliado,inimigo,critico);
         
-        double hpAtual = inimigo.getHpAtual() - dano;
+        double randConfuso = Math.random()*100; 
         
-        inimigo.setHpAtual(hpAtual);
-        JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " acertou o ataque e deu " + dano + " de dano!", "", JOptionPane.PLAIN_MESSAGE);
+        double hpAtual = 0;
+        
+        if (aliado.isConfusion() && randConfuso>50){
+            hpAtual = aliado.getHpAtual() - dano;
+            aliado.setHpAtual(hpAtual);
+            JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " está confuso e se acertou, causando " + dano + " de dano em si mesmo!", "", JOptionPane.PLAIN_MESSAGE);
+        }
+        else {
+            hpAtual = inimigo.getHpAtual() - dano;
+        
+            inimigo.setHpAtual(hpAtual);
+            JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " acertou o ataque e deu " + dano + " de dano!", "", JOptionPane.PLAIN_MESSAGE);
+        }
         
         double valor = 0;
         
