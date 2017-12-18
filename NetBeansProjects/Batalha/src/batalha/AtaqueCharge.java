@@ -31,6 +31,11 @@ public class AtaqueCharge extends Ataque{
             return;
         }
         
+        if (!this.calculoAcerto(aliado.calculoAccuracyEvasion(aliado.getModifierAccuracy()), inimigo.calculoAccuracyEvasion(inimigo.getModifierEvasion()), aliado.getStatus(), aliado.isFlinch())){
+            JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " errou o ataque!", "", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        
         boolean critico = calculoCritico(aliado.getSpd());
         
         double dano = calculoDano(aliado,inimigo,critico);

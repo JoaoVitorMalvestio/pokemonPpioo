@@ -127,7 +127,34 @@ public class Pokemon {
     public Status getStatus() {
         return status;
     }
-  
+    public void setModifierAccuracy(int modifierAccuracy) {
+        this.modifierAccuracy = modifierAccuracy;
+    }
+
+    public void setModifierEvasion(int modifierEvasion) {
+        this.modifierEvasion = modifierEvasion;
+    }
+
+    public void setModifierAtk(int modifierAtk) {
+        this.modifierAtk = modifierAtk;
+    }
+
+    public void setModifierDef(int modifierDef) {
+        this.modifierDef = modifierDef;
+    }
+
+    public void setModifierSpe(int modifierSpe) {
+        this.modifierSpe = modifierSpe;
+    }
+
+    public void setModifierSpd(int modifierSpd) {
+        this.modifierSpd = modifierSpd;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+    
     public double calculoAccuracyEvasion(int modificador){       
         switch ((modificador)){
             case -6: return 33;
@@ -149,7 +176,8 @@ public class Pokemon {
     
     public void setHpAtual(double hpAtual) {
         if(hpAtual <= this.hpMax) this.hpAtual = hpAtual;
-        else System.out.println("Vida do pokemon está completa!");
+        else this.hpAtual = this.hpMax;
+        //else System.out.println("Vida do pokemon está completa!");
 
         if(this.hpAtual <= 0){
             this.hpAtual = 0;

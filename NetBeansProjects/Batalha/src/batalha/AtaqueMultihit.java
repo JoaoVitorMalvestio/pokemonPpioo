@@ -6,6 +6,8 @@
 package batalha;
 
 import static java.lang.Integer.parseInt;
+import java.util.Random;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,8 +24,29 @@ public class AtaqueMultihit extends Ataque{
         this.max = parseInt(parametros[7].split(",")[1].trim());
     }
     
-    @Override
-    public void efeito(){
+    public void efeito(Pokemon aliado,Pokemon inimigo){
+        this.setPpAtual(this.getPpAtual() - 1);
         
+        JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " usou " + this.getNome(), "", JOptionPane.PLAIN_MESSAGE);
+        
+        if (!this.calculoAcerto(aliado.calculoAccuracyEvasion(aliado.getModifierAccuracy()), inimigo.calculoAccuracyEvasion(inimigo.getModifierEvasion()), aliado.getStatus(), aliado.isFlinch())){
+            JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " errou o ataque!", "", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        
+        boolean critico = calculoCritico(aliado.getSpd());
+        
+        Random rand = new Random();
+        int numAtaque = rand.nextInt((this.max - this.min) + 1) + this.min;
+        
+        double dano = 0;
+        int i;
+        
+        for(i=1;i<numAtaque;i++) dano += calculoDano(aliado,inimigo,critico);                
+        
+        double hpAtual = inimigo.getHpAtual() - dano;
+        
+        inimigo.setHpAtual(hpAtual);
+        JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " acertou o ataque " + numAtaque + "vezes e deu " + dano + " de dano!", "", JOptionPane.PLAIN_MESSAGE);
     }
 }

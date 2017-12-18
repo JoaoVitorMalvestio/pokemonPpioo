@@ -54,6 +54,7 @@ public class Batalha {
             
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
+            System.err.printf("\nO arquivo deve estar na pasta: C:\\TabelaEspecies.txt");
             fechaJogo();
         } catch (ArrayIndexOutOfBoundsException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
@@ -83,8 +84,10 @@ public class Batalha {
             
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
+            System.err.printf("\nO arquivo deve estar na pasta: C:\\TabelaAtaques.txt");
         } catch (ArrayIndexOutOfBoundsException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",e.getMessage());
+            System.err.printf("\nO arquivo esta alterado!");
         }
         return retorno;
     }
@@ -130,7 +133,7 @@ public class Batalha {
         do{
             try {
                 parametros = JOptionPane.showInputDialog("Entre com os parametros do pokemon Nº" + ++contPkm + "\n" + 
-                                                         "Formato: (idPokemon) (Level) (IdAtaque1) (IdAtaque2) (IdAtaque3) (IdAtaque4)","1 1 11 13 14 24").split(" ");
+                                                         "Formato: (idPokemon) (Level) (IdAtaque1) (IdAtaque2) (IdAtaque3) (IdAtaque4)","1 1 6 9 21 40").split(" ");
             } catch (NullPointerException e){
                 fechaJogo();
             }
@@ -243,11 +246,11 @@ public class Batalha {
             }
             //Se não, ver quem vai executar a troca e fazer primeiro
             else {
-                    listaPrioridadeJogador.get(0).trocarPokemon();
-                    listaPrioridadeJogador.get(1).usarAtaque(listaPrioridadeJogador.get(0).getPrimeiroPokemon());                   
-                    if (temVencedor()) break;
-                    if (pokemonEstaFainted(listaPrioridadeJogador.get(0))) listaPrioridadeJogador.get(0).forcaTroca();
-                    if (pokemonEstaFainted(listaPrioridadeJogador.get(1))) listaPrioridadeJogador.get(1).forcaTroca();
+                listaPrioridadeJogador.get(0).trocarPokemon();
+                listaPrioridadeJogador.get(1).usarAtaque(listaPrioridadeJogador.get(0).getPrimeiroPokemon());                   
+                if (temVencedor()) break;
+                if (pokemonEstaFainted(listaPrioridadeJogador.get(0))) listaPrioridadeJogador.get(0).forcaTroca();
+                if (pokemonEstaFainted(listaPrioridadeJogador.get(1))) listaPrioridadeJogador.get(1).forcaTroca();
             }                                                
      
         } while (!temVencedor());

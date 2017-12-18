@@ -67,7 +67,7 @@ public class Ataque {
     }
     
     public void efeito(Pokemon aliado,Pokemon inimigo){
-        this.ppAtual--;
+        this.setPpAtual(this.getPpAtual() - 1);
         
         JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " usou " + this.getNome(), "", JOptionPane.PLAIN_MESSAGE);
         
@@ -115,7 +115,7 @@ public class Ataque {
         double dano = 0;
         Random rand = new Random();
         
-        if(this.tipo == Tipo.valueOf("None") ||
+        if(this.tipo == Tipo.valueOf("Normal") ||
            this.tipo == Tipo.valueOf("Fighting") ||
            this.tipo == Tipo.valueOf("Flying") ||
            this.tipo == Tipo.valueOf("Poison") ||
@@ -123,7 +123,7 @@ public class Ataque {
            this.tipo == Tipo.valueOf("Rock") ||
            this.tipo == Tipo.valueOf("Bug") ||
            this.tipo == Tipo.valueOf("Ghost")){
-            A = (aliado.getAtk() < 0) ? 0 : aliado.getAtk();
+            A = aliado.getAtk();
             D = inimigo.getDef();
         }else 
         if(this.tipo == Tipo.valueOf("Fire") ||
@@ -133,7 +133,7 @@ public class Ataque {
            this.tipo == Tipo.valueOf("Ice") ||
            this.tipo == Tipo.valueOf("Psychic") ||
            this.tipo == Tipo.valueOf("Dragon")){
-            A = (aliado.getSpe() < 0) ? 0 : aliado.getSpe();
+            A = aliado.getSpe();
             D = inimigo.getSpe();
         }
         
@@ -142,7 +142,7 @@ public class Ataque {
         if(aliado.getStatus() == Status.valueOf("BURN")){
             A = (A < 0) ? 0 : (A/2);
         }
-        
+
         dano = (L * A * P / D / 50) + 2;
         
         if(this.tipo == aliado.getEspecie().getTipo1() || this.tipo == aliado.getEspecie().getTipo2()){

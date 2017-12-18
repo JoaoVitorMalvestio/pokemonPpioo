@@ -6,6 +6,7 @@
 package batalha;
 
 import static java.lang.Integer.parseInt;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,7 +22,28 @@ public class AtaqueFixo extends Ataque{
     }
     
     @Override
-    public void efeito(){
+    public void efeito(Pokemon aliado,Pokemon inimigo){
+        this.setPpAtual(this.getPpAtual() - 1);
         
+        JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " usou " + this.getNome(), "", JOptionPane.PLAIN_MESSAGE);
+        
+        if (!this.calculoAcerto(aliado.calculoAccuracyEvasion(aliado.getModifierAccuracy()), inimigo.calculoAccuracyEvasion(inimigo.getModifierEvasion()), aliado.getStatus(), aliado.isFlinch())){
+            JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " errou o ataque!", "", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        
+        double dano;
+        
+        if ("lvl".equals(this.val)){
+            dano = aliado.getLevel();
+        }
+        else {
+            dano = parseInt(this.val);
+        }
+
+        double hpAtual = inimigo.getHpAtual() - dano;
+        
+        inimigo.setHpAtual(hpAtual);
+        JOptionPane.showMessageDialog(null,aliado.getEspecie().getNome() + " acertou o ataque e deu " + dano + " de dano!", "", JOptionPane.PLAIN_MESSAGE);
     }
 }
