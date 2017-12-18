@@ -232,13 +232,15 @@ public class Batalha {
                 }
                 else {
                     listaPrioridadeJogador.get(0).usarAtaque(listaPrioridadeJogador.get(1).getPrimeiroPokemon());
+                    
                     if (temVencedor()) break;
                     if (pokemonEstaFainted(listaPrioridadeJogador.get(0))) listaPrioridadeJogador.get(0).forcaTroca();
                     if (pokemonEstaFainted(listaPrioridadeJogador.get(1))){
                         listaPrioridadeJogador.get(1).forcaTroca();
-                        continue; //Caso o pokemon morrer no ultimo ataque, o jogador nao pode atacar com o pokemon novo
+                        //continue; //Caso o pokemon morrer no ultimo ataque, o jogador nao pode atacar com o pokemon novo
                     }
-                    listaPrioridadeJogador.get(1).usarAtaque(listaPrioridadeJogador.get(0).getPrimeiroPokemon());
+                    else listaPrioridadeJogador.get(1).usarAtaque(listaPrioridadeJogador.get(0).getPrimeiroPokemon());
+                    
                     if (temVencedor()) break;
                     if (pokemonEstaFainted(listaPrioridadeJogador.get(0))) listaPrioridadeJogador.get(0).forcaTroca();
                     if (pokemonEstaFainted(listaPrioridadeJogador.get(1))) listaPrioridadeJogador.get(1).forcaTroca();
@@ -247,12 +249,14 @@ public class Batalha {
             //Se não, ver quem vai executar a troca e fazer primeiro
             else {
                 listaPrioridadeJogador.get(0).trocarPokemon();
-                listaPrioridadeJogador.get(1).usarAtaque(listaPrioridadeJogador.get(0).getPrimeiroPokemon());                   
+                listaPrioridadeJogador.get(1).usarAtaque(listaPrioridadeJogador.get(0).getPrimeiroPokemon());
+                
                 if (temVencedor()) break;
                 if (pokemonEstaFainted(listaPrioridadeJogador.get(0))) listaPrioridadeJogador.get(0).forcaTroca();
                 if (pokemonEstaFainted(listaPrioridadeJogador.get(1))) listaPrioridadeJogador.get(1).forcaTroca();
-            }                                                
-     
+            }
+            executaEfeitoStatus(jogador1);
+            executaEfeitoStatus(jogador2);
         } while (!temVencedor());
         
         if (jogador1.temPokemonVivo()) JOptionPane.showMessageDialog(null,"O jogador 1 ganhou!","", JOptionPane.PLAIN_MESSAGE);
@@ -273,5 +277,54 @@ public class Batalha {
     
     public static boolean temVencedor(){
         return !jogador1.temPokemonVivo() || !jogador2.temPokemonVivo();
+    }
+    
+    public static void executaEfeitoStatus(Jogador jogador){
+        Pokemon pokemon = jogador.getPrimeiroPokemon();
+        if (pokemon.getStatus()==Status.OK) return;
+        
+        if (pokemon.getStatus()==Status.BURN){
+            double dano = pokemon.getHpMax() * 6.25;
+            double hpAtual = pokemon.getHpAtual() - dano;
+            pokemon.setHpAtual(hpAtual);
+            JOptionPane.showMessageDialog(null,pokemon.getEspecie().getNome() + " recebeu " + dano + " de dano do status Burn!\n" + 
+                                               pokemon.getEspecie().getNome() + " HP: " + pokemon.getHpAtual(),"", JOptionPane.PLAIN_MESSAGE); 
+            if (pokemonEstaFainted(jogador)) jogador.forcaTroca();
+        }
+        if (pokemon.getStatus()==Status.POISON){
+            double dano = pokemon.getHpMax() * 6.25;
+            double hpAtual = pokemon.getHpAtual() - dano;
+            pokemon.setHpAtual(hpAtual);
+            JOptionPane.showMessageDialog(null,pokemon.getEspecie().getNome() + " recebeu " + dano + " de dano do status Poison!\n" + 
+                                               pokemon.getEspecie().getNome() + " HP: " + pokemon.getHpAtual(),"", JOptionPane.PLAIN_MESSAGE); 
+            if (pokemonEstaFainted(jogador)) jogador.forcaTroca();
+        }
+        if (pokemon.getStatus()==Status.FROZEN){
+            double rand = Math.random()*100;
+ 
+            if (10>rand) {
+                pokemon.setStatus(Status.OK);
+                JOptionPane.showMessageDialog(null,pokemon.getEspecie().getNome() + " saiu do status Frozen!","", JOptionPane.PLAIN_MESSAGE);
+            }
+        }
+        if (pokemon.getStatus()==Status.SLEEP){
+            double rand = Math.random()*100;
+ 
+            if (20>rand) {
+                pokemon.setStatus(Status.OK);            
+                JOptionPane.showMessageDialog(null,pokemon.getEspecie().getNome() + " saiu do status Frozen!","", JOptionPane.PLAIN_MESSAGE);
+            }
+        }
+        if (pokemon.isFlinch()){
+            pokemon.setFlinch(false);
+            JOptionPane.showMessageDialog(null,pokemon.getEspecie().getNome() + " saiu do status Flinch!","", JOptionPane.PLAIN_MESSAGE);
+        }
+        if (pokemon.isConfusion()){
+            double rand = Math.random()*100;
+ 
+            if (20>rand) pokemon.setConfusion(false);
+            JOptionPane.showMessageDialog(null,pokemon.getEspecie().getNome() + " saiu do status Confusion!","", JOptionPane.PLAIN_MESSAGE);
+        }
+        
     }
 }

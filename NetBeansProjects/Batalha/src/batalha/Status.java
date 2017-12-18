@@ -13,7 +13,6 @@ public enum Status {
     OK("OK"),
     FAINTED("FAINTED"),    
     BURN("BURN"),
-    WATER("WATER"),
     FROZEN("FROZEN"),
     PARALYSIS("PARALYSIS"),
     POISON("POISON"),
